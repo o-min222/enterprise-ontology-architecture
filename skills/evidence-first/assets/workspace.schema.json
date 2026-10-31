@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence-First local workspace 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["config_version", "behavior", "enabled_components", "primary_store"],
+  "properties": {
+    "config_version": {"const": "1.0"},
+    "behavior": {"const": "evidence-first"},
+    "enabled_components": {"type": "array", "uniqueItems": true, "items": {"enum": ["wiki", "db"]}},
+    "primary_store": {"enum": [null, "wiki", "db"]}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"primary_store": {"const": null}}},
+      "then": {"properties": {"enabled_components": {"maxItems": 0}}}
+    },
+    {
+      "if": {"properties": {"primary_store": {"const": "wiki"}}},
+      "then": {"properties": {"enabled_components": {"contains": {"const": "wiki"}}}}
+    },
+    {
+      "if": {"properties": {"primary_store": {"const": "db"}}},
+      "then": {"properties": {"enabled_components": {"contains": {"const": "db"}}}}
+    }
+  ]
+}

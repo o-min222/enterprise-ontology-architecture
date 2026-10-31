@@ -80,6 +80,10 @@ Claude Code에서 같은 정책을 사용하려면 프로젝트 루트의 기존
 
 ## 4. 설치 확인·업데이트·제거
 
+스킬 **설치**와 프로젝트의 저장 **초기 설정**은 별개다. 설치 후 “Evidence-First 초기 설정을 해줘”라고 요청하면 `행동만 / Wiki / DB / Wiki+DB`를 선택한다. 사용자가 이미 선택한 경우 다시 묻지 않는다. 일반 작업은 설정 없이 행동 원칙만 적용할 수 있다. 설정·이후 추가·이전 명령과 범위는 [설정 및 전환 절차](../skills/evidence-first/references/workspace-lifecycle.md), 사용 예는 [전환 예제](../skills/evidence-first/examples/setup-and-migration.md)를 참고한다.
+
+로컬 Wiki·SQLite 보조 도구에는 Python 3.10 이상이 필요하며 별도 패키지는 필요하지 않다. 원격 DB·기존 Wiki는 AI가 별도 조사·매핑한다. 현재 보조 도구가 모든 DB나 Wiki의 자동 이전을 제공하는 것은 아니다.
+
 1. 새 로컬 세션을 시작하고 스킬 목록/호출 기능으로 `evidence-first`가 보이는지 확인한다.
 2. “Evidence-First로 예제의 최신 Wiki와 원본 충돌을 분석하고, 근거와 미확인 사항을 구분해줘”라고 요청한다. Codex에서는 `$evidence-first`, Claude Code에서는 `/evidence-first`로 명시 호출할 수 있다.
 3. [가상 사례](../skills/evidence-first/examples/walkthroughs.md) 및 [행동 평가](../tests/scenarios.md)와 실제 응답·도구 실행을 비교한다. 모델이 파일을 실제 읽었는지와 적용한 버전을 확인한다.

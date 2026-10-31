@@ -18,6 +18,6 @@ No remote database connector, vector embeddings, hosted synchronization, backgro
 
 ## License status
 
-No repository reuse license has been declared. Public visibility and install instructions do not grant an open-source license. Ask the owner about redistribution or other reuse rights. Packaging metadata intentionally omits a license claim pending the owner's choice.
+This repository is distributed under the [MIT License](LICENSE). Preserve its copyright and permission notice in copies or substantial portions. Third-party dependencies and referenced external material retain their own terms. Both plugin manifests declare the SPDX identifier `MIT`; each standalone skill includes a copy of the license.
 
-한국어: 설치·오류·번역 문의는 원하는 언어로 이슈에 남길 수 있습니다. 사용 버전과 가상 재현 사례를 포함하고 민감정보는 제외해 주세요. 공개 저장소이지만 재사용 라이선스는 아직 선언되지 않았습니다.
+한국어: 설치·오류·번역 문의는 원하는 언어로 이슈에 남길 수 있습니다. 사용 버전과 가상 재현 사례를 포함하고 민감정보는 제외해 주세요. [MIT 라이선스](LICENSE)로 배포하며, 복사·재배포 시 저작권·허가 고지를 보존해야 합니다. 외부 의존성과 참조 자료의 조건은 별개입니다.

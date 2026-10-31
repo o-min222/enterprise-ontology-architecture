@@ -1,6 +1,7 @@
 {
   "name": "evidence-first",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "license": "MIT",
   "description": "Evidence-led reasoning, guided setup, optional local knowledge tools, and multilingual support.",
   "author": {"name": "o-min222", "url": "https://github.com/o-min222"},
   "homepage": "https://github.com/o-min222/enterprise-ontology-architecture",

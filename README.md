@@ -7,7 +7,7 @@
 **근거를 확인하고, 해석을 구분하고, 권한 안에서 실행하는 AI 작업 방식.**
 행동 지침만으로 시작하고, 필요할 때 Wiki·SQLite·그래프 DB·RAG를 추가하세요.
 
-`0.1.0 preview` · 로컬 도우미 · 다국어 · 공식 디렉터리 미등록
+`0.1.1 preview` · 로컬 도우미 · 다국어 · 공식 디렉터리 미등록
 
 ### 빠른 설치
 
@@ -39,7 +39,7 @@ Claude Code 대화창:
 
 [사용 예제](skills/evidence-first/examples/README.md) · [설치 상세](docs/evidence-first-installation.md) · [변경 이력](CHANGELOG.md) · [기여](CONTRIBUTING.md) · [지원/라이선스 상태](SUPPORT.md) · [개인정보](PRIVACY.md) · [보안](SECURITY.md)
 
-공개 저장소이지만 재사용 라이선스는 아직 선언되지 않았습니다. 플러그인은 AI 호스트의 실제 접근 권한을 확대하지 않습니다.
+[MIT 라이선스](LICENSE)로 배포합니다. 저작권·허가 고지를 보존해 사용·수정·재배포할 수 있습니다. 플러그인은 AI 호스트의 실제 접근 권한을 확대하지 않습니다.
 
 ---
 

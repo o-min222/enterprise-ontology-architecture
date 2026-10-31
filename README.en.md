@@ -7,7 +7,7 @@
 **Check evidence, separate interpretation, and act within authority.**
 Start with behavioral guidance. Add a Wiki, SQLite, graph DB, or RAG when useful.
 
-`0.1.0 preview` · local helpers · multilingual · not listed in official directories
+`0.1.1 preview` · local helpers · multilingual · not listed in official directories
 
 ### Quick install
 
@@ -39,7 +39,7 @@ Other skill hosts can use the complete `skills/evidence-first` folder. See the [
 
 [Examples](skills/evidence-first/examples/README.en.md) · [Installation](docs/evidence-first-installation.en.md) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Support/license status](SUPPORT.md) · [Privacy](PRIVACY.md) · [Security](SECURITY.md)
 
-No reuse license has been declared. Plugin instructions do not expand the AI host's actual permissions.
+Distributed under the [MIT License](LICENSE). Preserve the copyright and permission notice when using, modifying, or redistributing copies. Plugin instructions do not expand the AI host's actual permissions.
 
 ---
 

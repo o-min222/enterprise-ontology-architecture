@@ -1,4 +1,5 @@
 ---
+license: MIT
 name: evidence-first-setup
 description: Set up or reconfigure Evidence-First for a chosen project; select language, storage, optional retrieval, and adaptation preferences. Use for requested onboarding or configuration changes.
 ---

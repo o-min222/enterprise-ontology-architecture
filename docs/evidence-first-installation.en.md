@@ -16,7 +16,7 @@ cd enterprise-ontology-architecture
 git rev-parse HEAD
 ```
 
-Record and review the commit. Reproduce installation with `git checkout --detach <reviewed-commit-SHA>`, replacing the placeholder. Check the repository's license grant and organizational use policy separately; this package adds no new license declaration.
+Record and review the commit. Reproduce installation with `git checkout --detach <reviewed-commit-SHA>`, replacing the placeholder. This repository uses the [MIT License](../LICENSE); standalone skill folders include the notice. Preserve it when copying or redistributing. Organizational use policy and third-party terms remain separate.
 
 ## Copy to the product's discovery path
 

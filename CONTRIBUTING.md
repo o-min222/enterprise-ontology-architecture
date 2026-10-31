@@ -10,4 +10,4 @@ Contributions and reports may be written in your preferred language. English sum
 
 Keep both plugin manifest versions and the changelog aligned. Document changed behavior, validation limits, and migration implications. For translations, update the [language manifest](skills/evidence-first/locales/manifest.json) and parity tests when adding catalogs. Existing full/quickstart/fallback support tiers must remain explicit.
 
-No contribution license agreement is asserted here. This repository currently has no declared reuse license; discuss licensing with the owner before contributing material you cannot authorize. Do not submit third-party material without the necessary rights. See [support](SUPPORT.md) and [security reporting](SECURITY.md).
+Contributions to this repository are provided under its [MIT License](LICENSE). No separate contribution license agreement is required. Do not submit third-party material without the necessary rights. See [support](SUPPORT.md) and [security reporting](SECURITY.md).

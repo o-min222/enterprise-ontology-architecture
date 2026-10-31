@@ -1,4 +1,4 @@
-> プラグイン版 0.1.0 preview: [インストール・更新 (English)](docs/plugin-guide.md) · [한국어 안내](docs/plugin-guide.ko.md)。公式ディレクトリには未掲載です。
+> プラグイン版 0.1.1 preview: [インストール・更新 (English)](docs/plugin-guide.md) · [한국어 안내](docs/plugin-guide.ko.md)。[MIT ライセンス](LICENSE)。公式ディレクトリには未掲載です。
 
 # Evidence-First：日本語クイックスタート
 

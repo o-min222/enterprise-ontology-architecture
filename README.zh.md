@@ -1,4 +1,4 @@
-> 插件版 0.1.0 preview：[安装与更新 (English)](docs/plugin-guide.md) · [한국어 안내](docs/plugin-guide.ko.md)。尚未在官方目录上架。
+> 插件版 0.1.1 preview：[安装与更新 (English)](docs/plugin-guide.md) · [한국어 안내](docs/plugin-guide.ko.md)。[MIT 许可证](LICENSE)。尚未在官方目录上架。
 
 # Evidence-First：中文快速入门
 

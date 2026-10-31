@@ -1,4 +1,5 @@
 ---
+license: MIT
 name: evidence-first
 description: Apply evidence-first reasoning; find simpler effective methods through bounded comparison and scoped experience, with optional Wiki, relational/graph storage, grounded RAG, and multilingual responses.
 ---

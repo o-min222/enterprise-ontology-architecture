@@ -2,7 +2,7 @@
 
 [한국어](plugin-guide.ko.md) · [Home](../README.en.md)
 
-Evidence-First 0.1.0 is a skills-only plugin preview distributed by this repository. It is not listed in an official OpenAI or Anthropic directory. No hosted service, account, API key, MCP server, or background process is required. The AI host still determines available tools and permissions.
+Evidence-First 0.1.1 is a skills-only plugin preview distributed by this repository. It is not listed in an official OpenAI or Anthropic directory. No hosted service, account, API key, MCP server, or background process is required. The AI host still determines available tools and permissions.
 
 ## Install and start
 
@@ -68,7 +68,7 @@ Removing the plugin does not remove project knowledge, config, indexes, or backu
 - **RAG says stale:** rebuild from the selected primary after checking source changes; never treat cached ranking as verification.
 - **Language fallback:** valid unsupported catalog tags announce English tool-message fallback; the AI may still answer in the requested language. English/Korean full guides, Japanese/Chinese quickstarts/catalogs, and other-language answers are distinct support levels.
 
-See [support](../SUPPORT.md), [privacy](../PRIVACY.md), and [security](../SECURITY.md). The repository currently declares no reuse license; public availability is not an open-source license.
+See [support](../SUPPORT.md), [privacy](../PRIVACY.md), and [security](../SECURITY.md). This repository uses the [MIT License](../LICENSE). Preserve the copyright and permission notice when copying or redistributing; third-party dependencies and external references retain their own terms.
 
 ## Packaging and verification
 

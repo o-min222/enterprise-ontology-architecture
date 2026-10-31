@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 — 2026-11-01
+
+- Adopt the MIT License at the owner's request, with the copyright and permission notice included at repository root and in each standalone skill.
+- Declare `MIT` in both plugin manifests and skill metadata; update multilingual installation, support, and contribution guidance.
+- No runtime behavior or data-format changes.
+
 ## 0.1.0 — 2026-10-31
 
 Initial packaged preview; not an official directory listing or a hosted service.

@@ -5,6 +5,6 @@
 - [원천 자료](synthetic-sources.md): 예제의 L1·L2 및 독립 평가. 실제 서비스 접속 불필요.
 - [판단과 실행 사례](walkthroughs.md): 입력, 기대 응답, 피할 행동.
 - [주장 기록](evidence-ledger.json): 선택적 교환 형식으로 다섯 정보 유형을 표현. 관측된 문구와 주장의 검증 범위를 함께 읽는다.
-- [초기 선택과 이후 전환](setup-and-migration.md): 행동만 시작, DB 직접 추가, Wiki 병행·이전과 충돌 처리.
+- [초기 선택과 이후 전환](setup-and-migration.md): 행동만 시작, DB 직접 추가, Wiki 병행·이전, 그래프 DB+RAG와 충돌 처리.
 
 JSON Schema는 구조만 검증한다. 사례의 기대 행동은 원문 비교와 별도 행동 평가로 확인한다.

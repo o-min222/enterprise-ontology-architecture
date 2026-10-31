@@ -8,40 +8,48 @@
 | --- | --- | --- |
 | 행동만 (`behavior`) | 적용 | 없음. 기존 자료를 허용된 범위에서 활용 |
 | Wiki (`wiki`) | 적용 | 파일 기반 지식 기록·조회 |
-| DB (`db`) | 적용 | 구조화 기록·조회. Wiki를 거칠 필요 없음 |
-| Wiki+DB (`hybrid`) | 적용 | 둘 다 구성하고 기준 저장소 하나 지정 |
+| 관계형 DB (`db`) | 적용 | 로컬 SQLite. Wiki를 거칠 필요 없음 |
+| 그래프 DB (`graph`) | 적용 | 로컬 Oxigraph RDF DB |
+| 조합 (`--stores`) | 적용 | Wiki·관계형 DB·그래프 DB 중 필요한 것과 기준 하나 지정 |
 
-예시 질문: “행동 원칙만 적용할까요, Wiki·DB·둘 다를 구성할까요? 기존 자료 위치가 있으면 함께 알려주세요.” 한 번에 필요한 선택만 묻고, 설치 경로와 데이터 작업 경로를 구분한다. 행동만을 선택한 사용자에게 Wiki·DB 설치를 유도하지 않는다.
+활용 기능은 저장 방식과 별도로 선택한다. 기본 조회는 항상 가능하고, `graph_traversal`은 그래프 DB의 관계 탐색, `rag`는 기준 저장소 검색·근거 전달·AI의 근거 기반 생성을 뜻한다. RAG에 그래프 DB는 필수가 아니다. 관계 탐색은 그래프 저장소가 필요하고 RAG는 하나 이상의 저장소가 필요하다. 행동만을 선택하면 새로운 저장소·색인을 만들지 않는다.
+
+예시 질문: “행동 원칙만 적용할까요, Wiki·관계형 DB·그래프 DB를 구성할까요? RAG나 관계 탐색도 필요할까요? 기존 자료 위치가 있으면 함께 알려주세요.” 한 번에 필요한 선택만 묻고, 설치 경로와 데이터 작업 경로를 구분한다. 이미 선택된 기능이나 불필요한 구성에 답을 강요하지 않는다.
 
 Wiki나 DB를 선택하면 기존 시스템과 데이터, 대상 위치, 읽기/쓰기 권한, 공개 가능 범위를 먼저 파악한다. 이미 지정된 사항은 다시 묻지 않는다. 새 로컬 DB를 원하고 별도 기술 선택이 없으면 아래 SQLite 예시를 사용할 수 있다. 기존 DB·서버 DB를 쓰려는 사용자를 로컬 SQLite로 바꾸지 않는다.
 
 ## 설정과 로컬 보조 도구
 
-행동 지침은 Python 없이 적용할 수 있다. [workspace.py](../scripts/workspace.py)는 Python 3.10 이상·표준 라이브러리만으로 실행되는 **선택적 로컬 설정/이전 도구**다. 파일 Wiki와 SQLite를 실제로 생성하고 기록을 복사한다. 자동 수집·AI 호출·스케줄러·서버 권한 통제·운영 DB 연결은 포함하지 않는다.
+행동 지침은 Python 없이 적용할 수 있다. [workspace.py](../scripts/workspace.py)는 Python 3.10 이상의 **선택적 로컬 설정/이전 도구**다. 파일 Wiki·SQLite·Oxigraph를 실제 생성하고 기록을 복사한다. Wiki·SQLite·로컬 RAG에는 표준 라이브러리를 쓰며, 그래프 DB를 선택했을 때만 [선택 의존성](../requirements-graph.txt)을 설치한다. 자동 수집·모델 API 호출·스케줄러·서버 권한 통제·운영 DB 연결은 포함하지 않는다.
 
 대상 프로젝트의 `.evidence-first/config.json`에는 [설정 스키마](../assets/workspace.schema.json)의 형식으로 활성 구성과 기준 저장소를 기록한다. 예:
 
 ```json
 {
-  "config_version": "1.0",
+  "config_version": "2.0",
   "behavior": "evidence-first",
-  "enabled_components": ["wiki", "db"],
-  "primary_store": "wiki"
+  "enabled_components": ["wiki", "graph"],
+  "primary_store": "wiki",
+  "enabled_features": ["rag", "graph_traversal"]
 }
 ```
 
-`enabled_components`와 `primary_store`는 저장 구성이다. 정보 유형·검증 상태·실행 권한과 독립적이다. 모든 선택에서 같은 Evidence-First 원칙을 적용한다. 설정에 자격증명·접속 비밀·승인 토큰을 넣지 않는다. 설정 파일을 발견했다는 사실을 쓰기 허가로 취급하지 않는다.
+`enabled_components`와 `primary_store`는 저장 구성이고 `enabled_features`는 활용 기능이다. 정보 유형·검증 상태·실행 권한과 모두 독립적이다. 기존 v1 설정은 그대로 읽는다. 조회·이전 계획은 설정 파일을 바꾸지 않으며, 구성/기능 추가나 실제 이전 시 v1 사본을 이력에 남기고 v2로 기록한다. 기존 Wiki·SQLite 기록을 다시 만들거나 기본 RAG를 자동 활성화하지 않는다.
 
-설치된 스킬의 `scripts/workspace.py`를 실행한다. 아래 `PATH_TO_SKILL`과 `PROJECT`는 실제 경로로 바꾸고, 경로에 공백이 있으면 따옴표를 유지한다. 네 초기화 명령 중 선택한 **하나만** 실행한다.
+모든 선택에서 같은 Evidence-First 원칙을 적용한다. 설정에 자격증명·접속 비밀·승인 토큰을 넣지 않는다. 설정 파일을 발견했다는 사실을 쓰기 허가로 취급하지 않는다.
+
+설치된 스킬의 `scripts/workspace.py`를 실행한다. 아래 `PATH_TO_SKILL`과 `PROJECT`는 실제 경로로 바꾸고, 경로에 공백이 있으면 따옴표를 유지한다. 초기화 명령 중 선택한 **하나만** 실행한다. 그래프 DB 설치 및 RAG 명령은 [그래프·RAG 절차](graph-and-rag.md)를 따른다.
 
 ```sh
 python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" init --mode behavior
 python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" init --mode wiki
 python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" init --mode db
 python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" init --mode hybrid --primary wiki
+python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" init --mode graph --features rag graph_traversal
+python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" init --stores wiki db graph --primary graph --features rag
 ```
 
-초기화는 기존 설정을 덮어쓰지 않는다. hybrid의 기준 저장소는 `wiki` 또는 `db`를 명시한다. 행동만 선택하면 설정 이외의 Wiki·DB·지식 폴더를 생성하지 않는다. 설정을 보존하지 않겠다는 사용자는 파일 없이 기본 행동 원칙만 사용해도 된다.
+초기화는 기존 설정을 덮어쓰지 않는다. 둘 이상을 선택하면 기준 저장소를 명시한다. 기존 `hybrid`는 Wiki+SQLite의 간단한 별칭으로 유지한다. 행동만 선택하면 설정 이외의 Wiki·DB·지식 폴더를 생성하지 않는다. 설정을 보존하지 않겠다는 사용자는 파일 없이 기본 행동 원칙만 사용해도 된다.
 
 ```text
 PROJECT/
@@ -51,6 +59,8 @@ PROJECT/
   knowledge/wiki/records.json       Wiki의 구조화된 주장 기록
   knowledge/wiki/index.md           생성 가능한 조회용 페이지
   knowledge/db/evidence.sqlite3     DB의 주장 기록
+  knowledge/graph/                 선택적 Oxigraph 그래프 DB
+  .evidence-first/rag.sqlite3       선택적 재생성 가능한 검색 색인
 ```
 
 선택한 구성만 생성한다. `shared/`는 저장 방식과 무관한 공통 자료 위치다. L1 원본을 복사할지 참조할지는 접근 정책과 사용자의 목적에 따른다. L2 정의와 독립 해석은 서로 다른 파일로 관리하고 작성자·목적·버전을 보존한다. 내용을 확인하지 않은 원천 자료를 자동 수집하거나 `verified`로 등록하지 않는다.
@@ -63,16 +73,20 @@ PROJECT/
 4. 상대 출처 위치는 **프로젝트 루트 기준**으로 해석한다. `knowledge/shared/`의 참조·정의·독립 해석은 저장소를 이전해도 위치를 유지한다. 원천 시점·작성자·수집 맥락을 기록한다.
 5. 두 저장소를 사용할 때 변경은 기준 저장소에서 수행한다. 다른 저장소는 별도 생성한 사본·조회용이다. 자동 동기화하거나 두 사본을 합쳐 이중 집계하지 않는다. 기준 저장소의 변경이 자동 전파된다고 보고하지 않는다. 최신 사본이 필요하면 명시적 갱신 계획을 수행한다.
 
-로컬 보조 도구는 초기화·구성 추가·이전만 담당한다. 자료 등록·분석·페이지 작성은 AI가 허용된 도구로 수행한다. DB의 예시 테이블은 주장 교환의 최소 기반이며 기업 온톨로지 전체 스키마가 아니다. 필요한 객체·관계·색인·서비스 권한은 실제 업무에 맞춰 별도 설계한다.
+로컬 보조 도구는 초기화·추가·이전·기능 활성화와 고정된 그래프 관계 조회를 담당한다. 자료 등록·분석·페이지 작성은 AI가 허용된 도구로 수행한다. [rag.py](../scripts/rag.py)는 색인 생성·조회·출처가 포함된 생성 컨텍스트를 담당한다. 예시 테이블·그래프 투영은 기업 온톨로지 전체 스키마가 아니다. 필요한 도메인 객체·관계·서비스 권한은 실제 업무에 맞춰 별도 설계한다.
 
 ## 구성 추가
 
 ```sh
 python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" status
 python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" add db
+python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" add graph
+python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" enable rag
 ```
 
 Wiki만 있는 상태에서 DB를 추가해도 Wiki가 기준 저장소로 남는다. 추가한 DB는 빈 상태이며 기존 데이터를 자동 복사하지 않는다. 행동만에서 첫 저장소를 추가하면 그 저장소가 기준이 된다. 이미 추가된 구성은 중복 생성하지 않는다. 같은 위치에 미등록 Wiki·DB가 있으면 중단하고 먼저 조사·매핑한다.
+
+`enable rag`는 기능 선택만 기록하며 색인을 자동 생성하지 않는다. RAG의 `build`를 별도로 실행한다. `enable graph_traversal`은 활성 그래프 저장소가 필요하다. 저장소 추가와 기능 추가는 서로를 대신하지 않는다.
 
 ## 이전: 복사·대조·기준 전환
 
@@ -88,9 +102,11 @@ python "PATH_TO_SKILL/scripts/workspace.py" --root "PROJECT" migrate --to db --a
 1. 기존 쓰기 작업을 잠시 멈추고 범위·건수·ID·스키마·상대 출처 기준을 조사한다. 보조 도구의 파일 잠금은 도구끼리의 단일 작성자 제어이며 다른 앱의 쓰기를 차단하지 못한다.
 2. 원본과 설정의 복구 가능한 사본을 준비한다. 보조 도구는 이전 원본을 수정·삭제하지 않고 설정 변경 전 사본을 `history/`에 보존한다. 별도 백업 정책이 있으면 함께 따른다.
 3. [주장 스키마](../assets/assertion.schema.json)에 따라 원본을 검증하고 매핑한다. 보조 도구는 ID·분류·중복과 DB 열/payload 일치 여부만 자체 검사한다. 전체 스키마·출처 유효성·기밀성·의미의 일관성 검증은 AI와 검증 도구가 별도로 수행한다.
-4. 로컬 Wiki↔SQLite는 원래 JSON의 모든 필드와 값을 유지해 복사한다. ID·버전·출처·L2 맥락·검증 범위를 바꾸지 않는다. 건수와 ID 순으로 정렬한 전체 JSON의 SHA-256을 대조하고 원본이 중간에 달라지면 기준을 전환하지 않는다. 이미 동일한 대상이면 재삽입 없이 전환할 수 있다.
+4. 로컬 Wiki↔SQLite↔Oxigraph는 원래 JSON의 모든 필드와 값을 유지해 복사한다. ID·버전·출처·L2 맥락·검증 범위를 바꾸지 않는다. 건수와 ID 순으로 정렬한 전체 JSON의 SHA-256을 대조하고 원본이 중간에 달라지면 기준을 전환하지 않는다. 이미 동일한 대상이면 재삽입 없이 전환할 수 있다. 매핑되지 않은 그래프 triple이나 payload와 다른 투영은 조용히 제외하지 않고 이전을 중단한다.
 5. 원본과 대상이 다르면 자동 병합·덮어쓰기를 하지 않는다. 충돌을 검토하고 필요하면 기존 대상을 별도 보관한 뒤 빈 대상에 이전한다. 승인 없는 삭제나 검증 상태 승격을 하지 않는다.
 6. 검증 후 설정의 `primary_store`를 변경하고 양쪽 구성을 유지한다. 출처 문서·L2 정의·독립 해석은 `shared/`에 그대로 남는다. 이후 쓰기는 새 기준에만 한다. 삭제·퇴역·동기화·예약 실행은 별도 요청과 권한이 필요하다.
+
+RAG 기능 선택은 이전 후에도 유지하되, 색인은 기준 저장소·레코드 fingerprint에 결합돼 있으므로 다시 생성한다. 이전 색인을 원본 데이터처럼 복사하거나 새 기준의 검색 결과로 사용하지 않는다. 그래프 읽기·조회·이전 계획 전에도 외부 작성 작업을 멈춘다. Oxigraph read-only 접근과 외부 프로세스의 동시 쓰기는 지원하지 않는다.
 
 보조 도구는 **관리되는 주장 레코드만 이전**한다. 임의의 Wiki 페이지·첨부·외부 DB 테이블을 자동 발견해 변환하지 않는다. `shared/` 이외에 실제 자료가 있으면 이전 계획에서 빠짐없이 조사하고 별도로 보존·매핑한다. 출처 URL 변경이 필요한 경우 원래 locator와 새 locator 대응을 남기고 임의 치환하지 않는다.
 

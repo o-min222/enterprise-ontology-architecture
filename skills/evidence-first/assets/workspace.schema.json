@@ -1,16 +1,25 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Evidence-First local workspace 1.0",
+  "title": "Evidence-First local workspace 1.0 and 2.0",
   "type": "object",
   "additionalProperties": false,
   "required": ["config_version", "behavior", "enabled_components", "primary_store"],
   "properties": {
-    "config_version": {"const": "1.0"},
+    "config_version": {"enum": ["1.0", "2.0"]},
     "behavior": {"const": "evidence-first"},
-    "enabled_components": {"type": "array", "uniqueItems": true, "items": {"enum": ["wiki", "db"]}},
-    "primary_store": {"enum": [null, "wiki", "db"]}
+    "enabled_components": {"type": "array", "uniqueItems": true, "items": {"enum": ["wiki", "db", "graph"]}},
+    "primary_store": {"enum": [null, "wiki", "db", "graph"]},
+    "enabled_features": {"type": "array", "uniqueItems": true, "items": {"enum": ["rag", "graph_traversal"]}}
   },
   "allOf": [
+    {
+      "if": {"properties": {"config_version": {"const": "2.0"}}},
+      "then": {"required": ["enabled_features"]},
+      "else": {
+        "not": {"required": ["enabled_features"]},
+        "properties": {"enabled_components": {"items": {"enum": ["wiki", "db"]}}}
+      }
+    },
     {
       "if": {"properties": {"primary_store": {"const": null}}},
       "then": {"properties": {"enabled_components": {"maxItems": 0}}}
@@ -22,6 +31,18 @@
     {
       "if": {"properties": {"primary_store": {"const": "db"}}},
       "then": {"properties": {"enabled_components": {"contains": {"const": "db"}}}}
+    },
+    {
+      "if": {"properties": {"primary_store": {"const": "graph"}}},
+      "then": {"properties": {"enabled_components": {"contains": {"const": "graph"}}}}
+    },
+    {
+      "if": {"required": ["enabled_features"], "properties": {"enabled_features": {"contains": {"const": "rag"}}}},
+      "then": {"properties": {"enabled_components": {"minItems": 1}}}
+    },
+    {
+      "if": {"required": ["enabled_features"], "properties": {"enabled_features": {"contains": {"const": "graph_traversal"}}}},
+      "then": {"properties": {"enabled_components": {"contains": {"const": "graph"}}}}
     }
   ]
 }

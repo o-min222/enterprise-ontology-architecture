@@ -19,8 +19,10 @@ from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills/evidence-first"
+sys.path.insert(0, str(SKILL / "scripts"))
 spec = importlib.util.spec_from_file_location("workspace", SKILL / "scripts/workspace.py")
 workspace = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = workspace
 spec.loader.exec_module(workspace)
 RECORDS = json.loads((SKILL / "examples/evidence-ledger.json").read_text(encoding="utf-8"))
 CONFIG_SCHEMA = json.loads((SKILL / "assets/workspace.schema.json").read_text(encoding="utf-8"))

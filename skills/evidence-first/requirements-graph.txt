@@ -1,0 +1,2 @@
+# Optional native graph storage only. Wiki/SQLite/local RAG use the standard library.
+pyoxigraph>=0.5.13,<0.6

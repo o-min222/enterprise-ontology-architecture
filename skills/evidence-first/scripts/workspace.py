@@ -1,4 +1,4 @@
-"""Local setup and lossless assertion transport. Python 3.10+, standard library only.
+"""Local setup and lossless assertion transport. Python 3.10+.
 
 This helper does not enforce access control or schedule AI work. External stores
 need an explicit mapping and migration procedure; see workspace-lifecycle.md.
@@ -16,9 +16,10 @@ import uuid
 
 TYPES = ("observation", "hypothesis", "reviewed_assessment", "official_decision", "execution_result")
 STATUSES = ("unverified", "in_review", "verified", "disputed")
-MODES = {"behavior": [], "wiki": ["wiki"], "db": ["db"], "hybrid": ["wiki", "db"]}
+MODES = {"behavior": [], "wiki": ["wiki"], "db": ["db"], "hybrid": ["wiki", "db"], "graph": ["graph"]}
+FEATURES = ("rag", "graph_traversal")
 CONFIG = ".evidence-first/config.json"
-STORES = {"wiki": "knowledge/wiki", "db": "knowledge/db/evidence.sqlite3"}
+STORES = {"wiki": "knowledge/wiki", "db": "knowledge/db/evidence.sqlite3", "graph": "knowledge/graph"}
 
 
 def path_at(root, relative):
@@ -41,16 +42,32 @@ def encoded(value):
 
 def load_config(root):
     config = json.loads(path_at(root, CONFIG).read_text(encoding="utf-8"))
-    if not isinstance(config, dict) or set(config) != {"config_version", "behavior", "enabled_components", "primary_store"}:
+    if not isinstance(config, dict):
+        raise ValueError("Expected a workspace configuration object")
+    version = config.get("config_version")
+    fields = {"config_version", "behavior", "enabled_components", "primary_store"}
+    if version == "2.0":
+        fields.add("enabled_features")
+    if set(config) != fields:
         raise ValueError("Unsupported workspace configuration fields")
     enabled = config.get("enabled_components")
     primary = config.get("primary_store")
-    if (config.get("config_version") != "1.0" or config.get("behavior") != "evidence-first"
-            or not isinstance(enabled, list) or any(not isinstance(c, str) or c not in STORES for c in enabled)
+    features = config.get("enabled_features", [])
+    allowed = ("wiki", "db") if version == "1.0" else STORES
+    if (version not in ("1.0", "2.0") or config.get("behavior") != "evidence-first"
+            or not isinstance(enabled, list) or any(not isinstance(c, str) or c not in allowed for c in enabled)
             or len(enabled) != len(set(enabled))
             or (enabled and primary not in enabled) or (not enabled and primary is not None)):
         raise ValueError("Unsupported or inconsistent workspace configuration")
+    validate_features(enabled, features)
     return config
+
+
+def validate_features(components, features):
+    if (not isinstance(features, list) or any(not isinstance(f, str) or f not in FEATURES for f in features)
+            or len(features) != len(set(features)) or (features and not components)
+            or ("graph_traversal" in features and "graph" not in components)):
+        raise ValueError("Features need compatible storage: RAG needs a store; graph traversal needs graph")
 
 
 def save_config(root, config):
@@ -60,6 +77,8 @@ def save_config(root, config):
         backup = path_at(root, f".evidence-first/history/{uuid.uuid4().hex}.json")
         backup.parent.mkdir(exist_ok=True)
         backup.write_bytes(path.read_bytes())
+    config["config_version"] = "2.0"
+    config.setdefault("enabled_features", [])
     temporary = path.with_name(f"config-{uuid.uuid4().hex}.tmp")
     try:
         temporary.write_text(encoded(config), encoding="utf-8")
@@ -85,6 +104,8 @@ def writer(root):
 
 
 def prepare(root, component):
+    if component == "graph":
+        import graph_store  # Optional dependency is checked before creating storage.
     path = path_at(root, STORES[component])
     if path.exists():
         raise ValueError(f"Existing {component} store requires inspection and mapping")
@@ -93,6 +114,8 @@ def prepare(root, component):
         path.mkdir(parents=True)
         (path / "records.json").write_text("[]\n", encoding="utf-8")
         (path / "index.md").write_text("# Evidence-First Wiki\n\n공유 근거·정의·독립 해석은 `../shared/`에서 관리합니다.\n", encoding="utf-8")
+    elif component == "graph":
+        graph_store.prepare(path)
     else:
         path.parent.mkdir(parents=True, exist_ok=True)
         with contextlib.closing(sqlite3.connect(path)) as connection:
@@ -109,6 +132,9 @@ def read_store(root, component):
     path = path_at(root, STORES[component])
     if component == "wiki":
         records = json.loads(path_at(root, f"{STORES['wiki']}/records.json").read_text(encoding="utf-8"))
+    elif component == "graph":
+        import graph_store
+        records = graph_store.read(path)
     else:
         with contextlib.closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)) as connection:
             rows = connection.execute("SELECT id, information_type, verification_status, payload FROM assertions").fetchall()
@@ -155,6 +181,9 @@ def write_empty_store(root, component, records):
                 "주장:", "", str(record.get("statement", "")), "",
             ])
         path_at(root, f"{STORES['wiki']}/index.md").write_text("\n".join(lines), encoding="utf-8")
+    elif component == "graph":
+        import graph_store
+        graph_store.write_empty(path, records)
     else:
         with contextlib.closing(sqlite3.connect(path)) as connection:
             with connection:
@@ -163,12 +192,20 @@ def write_empty_store(root, component, records):
                 ])
 
 
-def initialize(root, mode, primary=None):
-    if mode not in MODES:
+def initialize(root, mode=None, primary=None, components=None, features=None):
+    if components is not None and mode is not None:
+        raise ValueError("Choose a mode or explicit stores, not both")
+    if components is None and mode not in MODES:
         raise ValueError("Unknown mode")
-    components = MODES[mode].copy()
-    if mode == "hybrid" and primary is None:
-        raise ValueError("Hybrid mode requires an explicit primary store")
+    components = MODES[mode].copy() if components is None else list(components)
+    if len(components) != len(set(components)) or any(c not in STORES for c in components):
+        raise ValueError("Unknown or duplicate store")
+    features = [] if features is None else list(features)
+    validate_features(components, features)
+    if "graph" in components:
+        import graph_store
+    if len(components) > 1 and primary is None:
+        raise ValueError("Multiple stores require an explicit primary store")
     primary = primary or (components[0] if components else None)
     if (components and primary not in components) or (not components and primary is not None):
         raise ValueError("Primary store must be enabled")
@@ -182,7 +219,7 @@ def initialize(root, mode, primary=None):
                 raise ValueError("Existing store requires inspection and mapping")
         for component in components:
             prepare(root, component)
-        config = {"config_version": "1.0", "behavior": "evidence-first", "enabled_components": components, "primary_store": primary}
+        config = {"config_version": "2.0", "behavior": "evidence-first", "enabled_components": components, "primary_store": primary, "enabled_features": features}
         save_config(root, config)
     return config
 
@@ -204,6 +241,8 @@ def add(root, component):
 def migrate(root, target, apply=False):
     if target not in STORES:
         raise ValueError("Unknown target")
+    if target == "graph":
+        import graph_store
     # A preview never creates files, including a lock or a database.
     with writer(root) if apply else contextlib.nullcontext():
         config = load_config(root)
@@ -235,27 +274,63 @@ def migrate(root, target, apply=False):
         return dict(result, applied=True)
 
 
+def enable(root, feature):
+    with writer(root):
+        config = load_config(root)
+        features = config.get("enabled_features", []).copy()
+        if feature in features:
+            return config
+        features.append(feature)
+        validate_features(config["enabled_components"], features)
+        config["enabled_features"] = features
+        save_config(root, config)
+    return config
+
+
+def graph_query(root, entity):
+    config = load_config(root)
+    if "graph_traversal" not in config.get("enabled_features", []):
+        raise ValueError("Enable graph_traversal before querying relationships")
+    import graph_store
+    records = read_store(root, "graph")
+    identities = graph_store.related(path_at(root, STORES["graph"]), entity)
+    return {"store": "graph", "is_primary": config["primary_store"] == "graph", "entity": entity,
+            "relationship": "assertion about entity; not proof of a real-world relation",
+            "evidence": [record for record in records if record["id"] in identities]}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", required=True, type=Path)
     commands = parser.add_subparsers(dest="command", required=True)
     init = commands.add_parser("init")
-    init.add_argument("--mode", choices=MODES, required=True)
+    selection = init.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--mode", choices=MODES)
+    selection.add_argument("--stores", choices=STORES, nargs="+")
     init.add_argument("--primary", choices=STORES)
+    init.add_argument("--features", choices=FEATURES, nargs="*", default=[])
     commands.add_parser("status")
     extra = commands.add_parser("add")
     extra.add_argument("component", choices=STORES)
+    feature = commands.add_parser("enable")
+    feature.add_argument("feature", choices=FEATURES)
+    graph = commands.add_parser("graph-query")
+    graph.add_argument("--entity", required=True)
     move = commands.add_parser("migrate")
     move.add_argument("--to", choices=STORES, required=True)
     move.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     try:
         if args.command == "init":
-            result = initialize(args.root, args.mode, args.primary)
+            result = initialize(args.root, args.mode, args.primary, args.stores, args.features)
         elif args.command == "add":
             result = add(args.root, args.component)
         elif args.command == "migrate":
             result = migrate(args.root, args.to, args.apply)
+        elif args.command == "enable":
+            result = enable(args.root, args.feature)
+        elif args.command == "graph-query":
+            result = graph_query(args.root, args.entity)
         else:
             result = load_config(args.root)
         print(encoded(result), end="")

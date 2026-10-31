@@ -8,5 +8,6 @@
 - [초기 선택과 이후 전환](setup-and-migration.md): 행동만 시작, DB 직접 추가, Wiki 병행·이전, 그래프 DB+RAG와 충돌 처리.
 - [AI의 환경 개선 제안·진행](adaptive-environment.md): 관찰·대안·허용된 실행·효과 확인, 제안만 하는 경우와 중단 조건.
 - [가상 자율 정책](adaptation-local-auto.json): 실제 승인으로 사용하지 않는 정책 형식 예시.
+- [효율적인 방향 찾기](efficient-work.md): 작은 비교·전체 부담·품질 조건·조건부 경험 재사용.
 
 JSON Schema는 구조만 검증한다. 사례의 기대 행동은 원문 비교와 별도 행동 평가로 확인한다.

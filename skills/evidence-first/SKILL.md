@@ -1,6 +1,6 @@
 ---
 name: evidence-first
-description: Apply evidence-first reasoning; assess and improve the working environment when justified, including optional Wiki, relational/graph storage and grounded RAG within authorized scope.
+description: Apply evidence-first reasoning; find simpler effective methods through bounded comparison and scoped learning, including optional Wiki, relational/graph storage and grounded RAG.
 ---
 
 # Evidence-First
@@ -36,6 +36,12 @@ L1과 L2는 선택과 누락을 포함한 현실의 표현이다. 어느 계층�
 기본은 현재 요청에 이미 부여된 권한 안에서 진행하는 `task_scoped`다. 프로젝트의 `.evidence-first/adaptation.json`에 제안만 하는 `propose_only` 또는 사용자가 지정한 로컬 작업을 자율 적용하는 `scoped_auto`를 기록할 수도 있다. 기존 승인 범위의 작업은 재승인을 반복하지 않는다. 범위 밖의 변경은 검토 가능한 계획까지 준비하고 부족한 권한만 확인한다. AI는 자신의 허용 범위를 스스로 넓히지 않는다.
 
 실행 도구의 성공과 업무 효과를 구분해 기록한다. 효과가 없거나 전제·권한·데이터가 달라지면 반복 확장하지 말고 중단·재검토한다. 원본과 새로 생긴 기록을 보존하며 복구한다. 이 규칙은 AI의 작업 중 판단을 위한 것이며 상시 감시·예약 실행을 자동 생성하지 않는다.
+
+## 효율적인 방법 찾기
+
+작업 목적·품질 조건을 유지하면서 시간·재작업·도구/모델 사용·설정/이전/유지 부담을 줄이는 방법을 찾는다. [효율 비교와 학습](references/efficient-work.md)에 따라 실제 병목이 있으면 현재 방법과 유망한 대안 하나부터 작게 비교하고, 전체 비용과 근거 품질을 보고 선택한다. 단발성 작업이나 충분히 잘 작동하는 환경에 실험·새 구성을 강제하지 않는다.
+
+정확성·출처 추적·해석 분리·권한 조건을 낮춰 속도를 얻지 않는다. 유의미한 차이가 확인되지 않으면 단순한 현재 방식을 유지한다. 반복 활용할 가치가 있는 관측 결과는 프로젝트의 허용된 로컬 기록에 적용 조건·근거·실패·한계와 함께 남긴다. 다음 작업에서는 조건을 확인해 재사용하며, 이를 보편적 사실·새 권한·모델 자체 학습으로 취급하지 않는다.
 
 ## 작업 방식
 

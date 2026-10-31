@@ -1,6 +1,6 @@
 ---
 name: evidence-first
-description: Apply evidence-first reasoning; optionally configure or migrate Wiki, relational or graph storage and grounded RAG while preserving sources, semantic definitions, and independent interpretations.
+description: Apply evidence-first reasoning; assess and improve the working environment when justified, including optional Wiki, relational/graph storage and grounded RAG within authorized scope.
 ---
 
 # Evidence-First
@@ -19,15 +19,23 @@ L1과 L2는 선택과 누락을 포함한 현실의 표현이다. 어느 계층�
 
 ## 초기 설정과 구성 변경
 
-일반 요청에는 설정 없이 행동 원칙을 바로 적용한다. 설정 파일이 없다고 작업을 막거나 Wiki·DB를 자동 생성하지 않는다. 사용자가 **초기 설정·저장 구성 추가·이전**을 요청하면 [설정 및 전환 절차](references/workspace-lifecycle.md)를 읽는다.
+일반 요청에는 설정 없이 행동 원칙을 바로 적용한다. 설정 파일이 없다고 작업을 막거나 Wiki·DB를 자동 생성하지 않는다. 사용자가 **초기 설정·저장 구성 추가·이전**을 요청하거나 허용된 구성 변경을 진행할 때는 [설정 및 전환 절차](references/workspace-lifecycle.md)를 읽는다.
 
 처음 설정할 때 기존 선택이 없으면 **저장 방식**(없음·Wiki·관계형 DB·그래프 DB·조합)과 **활용 기능**(기본 조회·관계 탐색·RAG)을 구분해 선택하고 작업 위치를 확인한다. 사용자가 이미 선택했다면 재질문하지 않는다. 여러 저장소는 기준을 하나 정한다. RAG는 저장소 유형이나 검증 상태가 아니며 Wiki·관계형 DB·그래프 DB 위에 선택적으로 추가한다. 선택은 성숙도 단계가 아니다.
 
-선택은 대상 프로젝트의 `.evidence-first/config.json`에 기록한다. 이 설정은 저장 방식만 선택하며 권한을 부여하지 않는다. 기존 프로젝트 설정을 우선하고, 초기 설정을 매 세션 반복하지 않는다. 기존 Wiki·DB가 있으면 읽기 전용 조사와 매핑부터 수행하며 빈 저장소로 덮어쓰지 않는다.
+저장 방식·활용 기능 선택은 대상 프로젝트의 `.evidence-first/config.json`에 기록한다. 이 설정은 실행 권한을 부여하지 않는다. 기존 프로젝트 설정을 우선하고, 초기 설정을 매 세션 반복하지 않는다. 기존 Wiki·DB가 있으면 읽기 전용 조사와 매핑부터 수행하며 빈 저장소로 덮어쓰지 않는다.
 
 추가와 이전을 구분한다. **추가**는 기존 기준 저장소를 유지한다. **이전**은 출처·ID·L2 버전·분류·검증 범위·독립 해석을 보존하여 복사하고, 대조가 끝난 뒤 기준 저장소를 바꾼다. 원본 삭제·자동 양방향 동기화·검증 상태 승격을 포함하지 않는다.
 
 그래프 DB·관계 탐색·RAG를 구성하거나 사용할 때는 [그래프·RAG 절차](references/graph-and-rag.md)를 읽는다. RAG는 기준 저장소의 허용된 기록만 검색하고 출처·유형·검증 범위를 유지한다. 검색 순위나 그래프 연결을 사실성·인과성·실행 권한으로 취급하지 않는다. 생성은 이 스킬을 사용하는 AI가 검색 근거를 바탕으로 수행한다.
+
+## 필요에 따른 환경 개선
+
+실제 작업에서 반복 조회·검색 실패·관계 탐색의 어려움·기존 색인 노후화처럼 구성을 재검토할 필요를 발견하면 [환경 개선 절차](references/adaptive-environment.md)를 읽고 **관찰 → 대안 비교 → 구체적 제안 → 허용된 실행 → 검증·효과 확인**으로 진행한다. 사용자가 먼저 기술 이름을 말할 때까지 기다릴 필요는 없다. 현재 방식으로 충분하면 변경하지 않는다.
+
+기본은 현재 요청에 이미 부여된 권한 안에서 진행하는 `task_scoped`다. 프로젝트의 `.evidence-first/adaptation.json`에 제안만 하는 `propose_only` 또는 사용자가 지정한 로컬 작업을 자율 적용하는 `scoped_auto`를 기록할 수도 있다. 기존 승인 범위의 작업은 재승인을 반복하지 않는다. 범위 밖의 변경은 검토 가능한 계획까지 준비하고 부족한 권한만 확인한다. AI는 자신의 허용 범위를 스스로 넓히지 않는다.
+
+실행 도구의 성공과 업무 효과를 구분해 기록한다. 효과가 없거나 전제·권한·데이터가 달라지면 반복 확장하지 말고 중단·재검토한다. 원본과 새로 생긴 기록을 보존하며 복구한다. 이 규칙은 AI의 작업 중 판단을 위한 것이며 상시 감시·예약 실행을 자동 생성하지 않는다.
 
 ## 작업 방식
 

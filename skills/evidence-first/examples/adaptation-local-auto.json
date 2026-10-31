@@ -1,0 +1,6 @@
+{
+  "policy_version": "1.0",
+  "mode": "scoped_auto",
+  "allowed_actions": ["enable_rag", "rebuild_rag", "enable_graph_traversal"],
+  "authorization_ref": "가상 예시: 소유자의 초기 설정 요청에서 이 프로젝트의 기존 저장소 기능 활성화·재색인을 허용함. 실제 사용 시 유효한 승인 참조로 대체."
+}

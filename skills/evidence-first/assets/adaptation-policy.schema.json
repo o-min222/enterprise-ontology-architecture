@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence-First environment adaptation policy 1.0",
+  "description": "Agent-interpreted preferences, not an authorization or security mechanism.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policy_version", "mode", "allowed_actions"],
+  "properties": {
+    "policy_version": {"const": "1.0"},
+    "mode": {"enum": ["task_scoped", "propose_only", "scoped_auto"]},
+    "allowed_actions": {
+      "type": "array", "uniqueItems": true,
+      "items": {"enum": ["add_wiki", "add_db", "add_graph", "enable_rag", "enable_graph_traversal", "rebuild_rag", "migrate_to_wiki", "migrate_to_db", "migrate_to_graph"]}
+    },
+    "authorization_ref": {"type": "string", "minLength": 1}
+  },
+  "allOf": [{
+    "if": {"properties": {"mode": {"const": "scoped_auto"}}},
+    "then": {"required": ["authorization_ref"], "properties": {"allowed_actions": {"minItems": 1}}},
+    "else": {"properties": {"allowed_actions": {"maxItems": 0}}}
+  }]
+}

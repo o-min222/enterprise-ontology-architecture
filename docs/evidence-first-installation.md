@@ -84,6 +84,8 @@ Claude Code에서 같은 정책을 사용하려면 프로젝트 루트의 기존
 
 로컬 보조 도구에는 Python 3.10 이상이 필요하다. Wiki·SQLite·키워드 RAG는 표준 라이브러리를 사용하고, Oxigraph 그래프 DB를 선택할 때만 선택 의존성을 설치한다. 설치와 실제 RAG 생성 흐름은 [그래프·RAG 안내](../skills/evidence-first/references/graph-and-rag.md)를 따른다. 기존 v1 설정은 그대로 읽고, 실제 구성 변경 시 이전 사본을 보존하며 v2로 갱신한다. 원격 DB·기존 Wiki는 AI가 별도 조사·매핑한다. 현재 보조 도구가 모든 DB나 Wiki의 자동 이전을 제공하는 것은 아니다.
 
+AI는 실제 작업에서 필요를 발견하면 구성 변화를 먼저 제안할 수 있다. 기본은 현재 요청의 권한을 따르는 `task_scoped`다. 영구 정책이 필요할 때만 `.evidence-first/adaptation.json`을 만들고, 소유자가 `propose_only` 또는 허용 작업을 지정한 `scoped_auto`를 선택한다. 이미 특정 변경을 허용했다면 정책 파일이나 재승인을 강제하지 않는다. [환경 개선 절차](../skills/evidence-first/references/adaptive-environment.md), [정책 형식](../skills/evidence-first/assets/adaptation-policy.schema.json), [가상 사례](../skills/evidence-first/examples/adaptive-environment.md)를 참고한다. 예제 정책 복사는 실제 승인으로 취급하지 않는다.
+
 1. 새 로컬 세션을 시작하고 스킬 목록/호출 기능으로 `evidence-first`가 보이는지 확인한다.
 2. “Evidence-First로 예제의 최신 Wiki와 원본 충돌을 분석하고, 근거와 미확인 사항을 구분해줘”라고 요청한다. Codex에서는 `$evidence-first`, Claude Code에서는 `/evidence-first`로 명시 호출할 수 있다.
 3. [가상 사례](../skills/evidence-first/examples/walkthroughs.md) 및 [행동 평가](../tests/scenarios.md)와 실제 응답·도구 실행을 비교한다. 모델이 파일을 실제 읽었는지와 적용한 버전을 확인한다.

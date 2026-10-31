@@ -35,3 +35,9 @@
 [설정 및 전환 절차](skills/evidence-first/references/workspace-lifecycle.md)에는 AI의 선택·설정·일상 운영·이전 규칙이 있습니다. 선택적 로컬 보조 도구는 파일 Wiki·SQLite·Oxigraph 그래프 DB를 생성하고 주장 레코드를 실제로 이전합니다. 이전은 읽기 전용 계획 → 복사·전체 값 대조 → 기준 전환으로 진행하며 원본을 남깁니다. 여러 저장소는 기준 하나를 정하고 자동 양방향 동기화를 가정하지 않습니다.
 
 [그래프 DB·RAG 안내](skills/evidence-first/references/graph-and-rag.md)에는 선택 의존성 설치, 객체·출처·모델 관계 조회, 로컬 키워드 RAG 색인·검색·AI의 근거 기반 응답 절차가 있습니다. 그래프 DB는 실제 Oxigraph RDF DB이며 RAG는 Wiki·SQLite·그래프 DB 모두에서 사용할 수 있습니다. 기본 RAG는 로컬 FTS5/BM25 검색이며 원격 모델 API·임베딩 서비스·범용 GraphRAG 추론은 별도 연결 범위입니다.
+
+### AI가 필요를 발견해 제안하고 진행
+
+작업 중 반복 조회·관계 탐색의 어려움·검색 실패·오래된 색인처럼 구성을 재검토할 필요가 생기면 AI가 먼저 대안을 비교하고 변경을 제안합니다. 현재 방식 유지도 선택지입니다. 허용된 범위에서는 기존 도구로 실행·데이터 대조·효과 확인까지 이어가고, 효과가 없거나 전제가 달라지면 확장을 멈추고 복구·재검토합니다.
+
+[환경 개선 절차](skills/evidence-first/references/adaptive-environment.md)는 기본적으로 현재 요청의 권한을 따르는 `task_scoped`로 동작합니다. 필요하면 프로젝트별로 제안만 하는 `propose_only` 또는 소유자가 지정한 로컬 변경을 자율 적용하는 `scoped_auto`를 기록할 수 있습니다. 정책은 AI가 읽는 지침이며 CLI·OS·서버의 권한 통제를 대신하지 않습니다.

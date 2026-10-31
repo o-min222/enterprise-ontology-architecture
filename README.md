@@ -14,3 +14,16 @@
 기존 관계형 DB와 API로 작은 객체 모델부터 시작할 수 있습니다. 그래프 DB, Wiki, RAG, MCP는 각각의 역할과 필요성을 확인한 뒤 선택합니다. AI는 온톨로지 자체가 아니라 외부 활용 수단입니다.
 
 > 공개 저장소입니다. 기업 내부 자료, 개인정보, 비밀정보는 게시하지 않습니다.
+
+## Evidence-First: 여러 코딩 AI를 위한 스킬
+
+공유 L1·L2 활용, 해석 독립, 비례적 검증, 출처 추적에 **실행 권한 분리**를 더한 재사용 가능한 행동 지침입니다. AI는 온톨로지의 외부 활용자이며, 스킬은 실제 접근 통제나 승인 시스템을 대체하지 않습니다.
+
+- [스킬 본문](skills/evidence-first/SKILL.md): 표준 `SKILL.md`, 도구에 종속되지 않는 공통 규칙.
+- [설치 및 연동](docs/evidence-first-installation.md): Codex·Claude Code 설치, AGENTS.md·CLAUDE.md 연결, 버전 고정과 업데이트.
+- [가상 예제](skills/evidence-first/examples/README.md): 원천 충돌·독립 평가·실행 결과 및 선택적 JSON 기록.
+- [검증과 테스트 시나리오](tests/README.md): 구조·출처 연결·5×4 독립 조합 검사와 행동 평가.
+
+`information_type` 5종과 `verification_status` 4종은 독립 축입니다. 공식 결정의 존재, 내용의 타당성, 현재 실행 권한을 구분합니다. 설치만으로 항상 적용되는 것은 아니므로, 기본 원칙을 프로젝트 지침에 연결하는 방법도 설치 안내에 포함했습니다.
+
+기존 아키텍처 문서는 `docs/`, 구축 프롬프트는 `prompts/`에 보존되어 있습니다.

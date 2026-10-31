@@ -1,0 +1,50 @@
+[
+  {
+    "schema_version": "1.0", "id": "OBS-DEMO-1", "entity_ids": ["MACHINE-DEMO"],
+    "statement": "가상 센서 로그에 09:00 정지와 09:40 재개가 기록됐다.",
+    "information_type": "observation", "verification_status": "verified",
+    "author_or_model": "synthetic-demo", "created_at": "2026-01-10T12:30:00Z", "version": "1",
+    "source_refs": [{"source_id": "L1-LOG-1", "locator": "synthetic-sources.md#l1-log-1", "source_version": "1", "accessed_at": "2026-01-10T12:00:00Z", "availability": "available"}],
+    "semantic_context": {"model_id": "L2-MODEL-1", "model_version": "1", "definition": "recorded_downtime_minutes는 센서 기록 간 차이다. 실제 생산 손실과 다르다."},
+    "verification": {"scope": "로그의 해당 문구 존재. 센서 정확도와 실제 생산 손실은 포함하지 않음.", "method": "가상 원문 대조", "evidence_refs": ["L1-LOG-1"]}
+  },
+  {
+    "schema_version": "1.0", "id": "HYP-DEMO-1", "entity_ids": ["MACHINE-DEMO"],
+    "statement": "가상 설비 정지의 원인이 냉각 이상일 수 있다.",
+    "information_type": "hypothesis", "verification_status": "unverified",
+    "author_or_model": "synthetic-demo", "created_at": "2026-01-10T12:30:00Z", "version": "1",
+    "source_refs": [{"source_id": "L1-WIKI-1", "locator": "synthetic-sources.md#l1-wiki-1", "source_version": "2", "accessed_at": "2026-01-10T12:00:00Z", "availability": "available"}],
+    "semantic_context": null,
+    "verification": {"scope": "냉각 이상이 실제 원인인지", "method": "미확인. Wiki에 원천 증빙 없음.", "evidence_refs": []}
+  },
+  {
+    "schema_version": "1.0", "id": "ASSESSMENT-DEMO-1", "entity_ids": ["MACHINE-DEMO"],
+    "statement": "가상 생산팀은 당일 출고 약속 기준으로 납기 위험이 높다고 평가했다.",
+    "information_type": "reviewed_assessment", "verification_status": "in_review",
+    "author_or_model": "synthetic-production-team", "created_at": "2026-01-10T12:30:00Z", "version": "1",
+    "source_refs": [{"source_id": "ASSESSMENT-PRODUCTION-1", "locator": "synthetic-sources.md#assessment-production-1", "source_version": "1", "accessed_at": "2026-01-10T12:00:00Z", "availability": "available"}],
+    "semantic_context": null,
+    "verification": {"scope": "납기 위험 평가의 타당성", "method": "평가 기준은 확인. 실제 납기 결과와 대조 중.", "evidence_refs": ["ASSESSMENT-PRODUCTION-1"]}
+  },
+  {
+    "schema_version": "1.0", "id": "DECISION-DEMO-1", "entity_ids": ["MACHINE-DEMO"],
+    "statement": "가상 운영위원회의 재가동 결정이 현재 유효하다.",
+    "information_type": "official_decision", "verification_status": "disputed",
+    "author_or_model": "synthetic-demo", "created_at": "2026-01-10T12:30:00Z", "version": "1",
+    "source_refs": [
+      {"source_id": "DECISION-1", "locator": "synthetic-sources.md#decision-1", "source_version": "1", "accessed_at": "2026-01-10T12:00:00Z", "availability": "available"},
+      {"source_id": "DECISION-2", "locator": "synthetic-sources.md#decision-2", "source_version": "2", "accessed_at": "2026-01-10T12:00:00Z", "availability": "available"}
+    ],
+    "semantic_context": null,
+    "verification": {"scope": "결정의 현재 효력. 결정 존재나 설비 안전성과 구별.", "method": "채택 문서와 보류 문서의 적용 관계 충돌. 책임자 확인 필요.", "evidence_refs": ["DECISION-1", "DECISION-2"]}
+  },
+  {
+    "schema_version": "1.0", "id": "EXECUTION-DEMO-1", "entity_ids": ["MACHINE-DEMO"],
+    "statement": "가상 점검 작업 생성 요청 T-DEMO-1 후 타임아웃이 발생했고 실제 생성 여부는 미확인이다.",
+    "information_type": "execution_result", "verification_status": "unverified",
+    "author_or_model": "synthetic-demo", "created_at": "2026-01-10T12:30:00Z", "version": "1",
+    "source_refs": [{"source_id": "EXECUTION-1", "locator": "synthetic-sources.md#execution-1", "source_version": "1", "accessed_at": "2026-01-10T12:00:00Z", "availability": "available"}],
+    "semantic_context": null,
+    "verification": {"scope": "요청에 따른 작업 생성 여부", "method": "미확인. 타임아웃 로그만 있으며 상태 조회 필요.", "evidence_refs": []}
+  }
+]

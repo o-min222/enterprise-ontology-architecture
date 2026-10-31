@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence-First assertion 1.0",
+  "description": "Optional exchange format. Shape validation does not establish truth or grant execution authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "entity_ids", "statement", "information_type", "verification_status", "author_or_model", "created_at", "version", "source_refs", "semantic_context", "verification"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "id": {"type": "string", "minLength": 1},
+    "entity_ids": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "statement": {"type": "string", "minLength": 1},
+    "information_type": {"enum": ["observation", "hypothesis", "reviewed_assessment", "official_decision", "execution_result"]},
+    "verification_status": {"enum": ["unverified", "in_review", "verified", "disputed"]},
+    "author_or_model": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "version": {"type": "string", "minLength": 1},
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["source_id", "locator", "source_version", "accessed_at", "availability"],
+        "properties": {
+          "source_id": {"type": "string", "minLength": 1},
+          "locator": {"type": "string", "minLength": 1},
+          "source_version": {"type": ["string", "null"], "minLength": 1},
+          "accessed_at": {"type": ["string", "null"], "format": "date-time"},
+          "availability": {"enum": ["available", "unavailable"]}
+        },
+        "allOf": [{
+          "if": {"properties": {"availability": {"const": "available"}}},
+          "then": {"properties": {"accessed_at": {"type": "string", "format": "date-time"}}},
+          "else": {"properties": {"accessed_at": {"type": "null"}}}
+        }]
+      }
+    },
+    "semantic_context": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["model_id", "model_version", "definition"],
+          "properties": {
+            "model_id": {"type": "string", "minLength": 1},
+            "model_version": {"type": "string", "minLength": 1},
+            "definition": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "verification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scope", "method", "evidence_refs"],
+      "properties": {
+        "scope": {"type": "string", "minLength": 1},
+        "method": {"type": "string", "minLength": 1},
+        "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      }
+    }
+  },
+  "allOf": [{
+    "if": {"properties": {"verification_status": {"const": "verified"}}},
+    "then": {
+      "properties": {
+        "source_refs": {"minItems": 1},
+        "verification": {"properties": {"evidence_refs": {"minItems": 1}}}
+      }
+    }
+  }]
+}

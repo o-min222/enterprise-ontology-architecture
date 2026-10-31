@@ -155,8 +155,8 @@ class WorkspaceTests(unittest.TestCase):
         self.seed()
         original_writer = workspace.write_empty_store
 
-        def concurrent_change(root, component, records):
-            original_writer(root, component, records)
+        def concurrent_change(root, component, records, **kwargs):
+            original_writer(root, component, records, **kwargs)
             changed = copy.deepcopy(RECORDS)
             changed[0]["version"] = "2"
             (self.root / "knowledge/wiki/records.json").write_text(json.dumps(changed), encoding="utf-8")

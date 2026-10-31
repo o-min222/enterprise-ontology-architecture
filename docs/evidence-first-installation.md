@@ -1,5 +1,7 @@
 # Evidence-First 설치 및 연동
 
+[English](evidence-first-installation.en.md) · [다국어 지원](../skills/evidence-first/references/languages.md)
+
 배포 원본은 [`skills/evidence-first/`](../skills/evidence-first/SKILL.md)다. 특정 AI의 확장 필드나 자동 실행 훅 없이 Agent Skills의 `name`·`description` frontmatter와 Markdown을 사용한다. **전체 폴더**를 복사해야 상대 경로의 참고자료·양식·예제가 함께 동작한다. 설치 자체는 데이터 접근·외부 전송·쓰기 권한을 부여하지 않는다.
 
 ## 1. 검토할 버전 고정
@@ -99,3 +101,9 @@ AI는 [효율 비교와 학습](../skills/evidence-first/references/efficient-wo
 ## 형식 근거
 
 이식 가능한 파일 구조와 frontmatter는 [Agent Skills 명세](https://agentskills.io/specification)를 따른다. 이 저장소의 L1·L2와 다섯 정보 유형은 프로젝트의 작업 모델이며 Agent Skills 표준이 정의한 분류라고 주장하지 않는다.
+
+## 언어 선택
+
+표준 SKILL.md는 영어 진입점이며 한국어 지침은 SKILL.ko.md에 보존한다. 언어별 스킬을 중복 설치하지 않고 전체 폴더의 동일한 스킬을 사용한다. AI는 요청 언어로 응답한다. 생성 Wiki 안내·RAG 규칙은 명령 앞의 `--lang ko` 등으로 선택하며 `en`·`ko`·`ja`·`zh`를 제공한다. 다른 언어는 도구 메시지의 영어 대체를 표시하고 AI가 요청 언어로 설명한다. CLI 옵션·JSON 키·기술 오류는 영어를 유지한다.
+
+원문·ID·분류·권한은 번역하지 않는다. 로컬 RAG는 자동 번역/의미 검색이 아니며 언어가 다르면 원래 질문을 유지한 채 `--search-query`로 원문 검색어를 별도 전달할 수 있다. CJK 검색용 색인 형식은 버전 2이며 기존 버전 1은 승인 범위에서 다시 만든다. 출력 언어 변경만으로 현재 색인을 다시 만들지 않는다.

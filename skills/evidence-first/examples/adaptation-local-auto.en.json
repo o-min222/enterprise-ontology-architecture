@@ -1,0 +1,10 @@
+{
+  "policy_version": "1.0",
+  "mode": "scoped_auto",
+  "allowed_actions": [
+    "enable_rag",
+    "rebuild_rag",
+    "enable_graph_traversal"
+  ],
+  "authorization_ref": "Fictional example only: replace with the actual owner instruction permitting these local feature/index actions. Copying this example grants no approval."
+}

@@ -44,6 +44,9 @@ class PackageTests(unittest.TestCase):
         self.assertTrue(0 < len(frontmatter["description"]) <= 1024)
         self.assertLessEqual(set(frontmatter), {"name", "description", "license", "compatibility", "metadata", "allowed-tools"})
         self.assertNotIn("allowed-tools", frontmatter, "This portable skill must not preapprove tools")
+        korean = yaml.safe_load((SKILL / "SKILL.ko.md").read_text(encoding="utf-8").split("---", 2)[1])
+        self.assertEqual(korean["name"], frontmatter["name"])
+        self.assertEqual(list(SKILL.rglob("SKILL.md")), [SKILL / "SKILL.md"])
 
     def test_copied_skill_is_self_contained(self):
         # Exercise the documented installation unit, without the repository docs.
@@ -57,7 +60,7 @@ class PackageTests(unittest.TestCase):
                         self.assertTrue(target.is_file())
 
     def test_repository_links_and_claude_import(self):
-        for path in [ROOT / "README.md", ROOT / "AGENTS.md", ROOT / "CLAUDE.md", ROOT / "docs/evidence-first-installation.md", *list((ROOT / "tests").glob("*.md"))]:
+        for path in [*ROOT.glob("README*.md"), *ROOT.glob("AGENTS*.md"), *ROOT.glob("CLAUDE*.md"), *(ROOT / "docs").glob("*.md"), *(ROOT / "prompts").glob("*.md"), *(ROOT / "tests").glob("*.md")]:
             for target in local_links(path):
                 self.assertTrue(target.is_file(), f"Broken local link in {path}: {target}")
         imports = re.findall(r"^@([^\s]+)$", (ROOT / "CLAUDE.md").read_text(encoding="utf-8"), re.M)

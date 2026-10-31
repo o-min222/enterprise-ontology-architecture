@@ -13,6 +13,8 @@ from pathlib import Path
 import sqlite3
 import uuid
 
+from localization import announce, messages, utf8_output
+
 
 TYPES = ("observation", "hypothesis", "reviewed_assessment", "official_decision", "execution_result")
 STATUSES = ("unverified", "in_review", "verified", "disputed")
@@ -103,7 +105,8 @@ def writer(root):
         lock.unlink()
 
 
-def prepare(root, component):
+def prepare(root, component, language="en"):
+    _, text = messages(language)
     if component == "graph":
         import graph_store  # Optional dependency is checked before creating storage.
     path = path_at(root, STORES[component])
@@ -113,7 +116,7 @@ def prepare(root, component):
     if component == "wiki":
         path.mkdir(parents=True)
         (path / "records.json").write_text("[]\n", encoding="utf-8")
-        (path / "index.md").write_text("# Evidence-First Wiki\n\n공유 근거·정의·독립 해석은 `../shared/`에서 관리합니다.\n", encoding="utf-8")
+        (path / "index.md").write_text("# Evidence-First Wiki\n\n" + text["shared_notice"] + "\n", encoding="utf-8")
     elif component == "graph":
         graph_store.prepare(path)
     else:
@@ -162,23 +165,24 @@ def digest(records):
     return hashlib.sha256(encoded(records).encode("utf-8")).hexdigest()
 
 
-def write_empty_store(root, component, records):
+def write_empty_store(root, component, records, language="en"):
+    _, text = messages(language)
     if read_store(root, component):
         raise ValueError("Destination is not empty")
     path = path_at(root, STORES[component])
     if component == "wiki":
         path_at(root, f"{STORES['wiki']}/records.json").write_text(encoded(records), encoding="utf-8")
         # The index is derived; user-authored prose belongs under shared/.
-        lines = ["# Evidence-First Wiki", "", "가져온 기록의 원문·출처·정의는 records.json 및 ../shared/를 확인하세요.", ""]
+        lines = ["# Evidence-First Wiki", "", text["index_notice"], ""]
         for record in records:
             verification = record.get("verification")
-            scope = verification.get("scope", "미기록") if isinstance(verification, dict) else "미기록"
+            scope = verification.get("scope", text["missing"]) if isinstance(verification, dict) else text["missing"]
             lines.extend([
                 f'## {record["id"]}', "",
-                f'- 정보 유형: `{record["information_type"]}`',
-                f'- 검증 상태: **{record["verification_status"]}**',
-                f'- 검증 범위: {scope}', "",
-                "주장:", "", str(record.get("statement", "")), "",
+                f'- {text["information_type"]}: `{record["information_type"]}`',
+                f'- {text["verification_status"]}: **{record["verification_status"]}**',
+                f'- {text["verification_scope"]}: {scope}', "",
+                text["statement"] + ":", "", str(record.get("statement", "")), "",
             ])
         path_at(root, f"{STORES['wiki']}/index.md").write_text("\n".join(lines), encoding="utf-8")
     elif component == "graph":
@@ -192,7 +196,8 @@ def write_empty_store(root, component, records):
                 ])
 
 
-def initialize(root, mode=None, primary=None, components=None, features=None):
+def initialize(root, mode=None, primary=None, components=None, features=None, language="en"):
+    messages(language)
     if components is not None and mode is not None:
         raise ValueError("Choose a mode or explicit stores, not both")
     if components is None and mode not in MODES:
@@ -218,27 +223,29 @@ def initialize(root, mode=None, primary=None, components=None, features=None):
             if path_at(root, STORES[component]).exists():
                 raise ValueError("Existing store requires inspection and mapping")
         for component in components:
-            prepare(root, component)
+            prepare(root, component, language)
         config = {"config_version": "2.0", "behavior": "evidence-first", "enabled_components": components, "primary_store": primary, "enabled_features": features}
         save_config(root, config)
     return config
 
 
-def add(root, component):
+def add(root, component, language="en"):
+    messages(language)
     if component not in STORES:
         raise ValueError("Unknown component")
     with writer(root):
         config = load_config(root)
         if component in config["enabled_components"]:
             return config
-        prepare(root, component)
+        prepare(root, component, language)
         config["enabled_components"].append(component)
         config["primary_store"] = config["primary_store"] or component
         save_config(root, config)
     return config
 
 
-def migrate(root, target, apply=False):
+def migrate(root, target, apply=False, language="en"):
+    messages(language)
     if target not in STORES:
         raise ValueError("Unknown target")
     if target == "graph":
@@ -262,9 +269,9 @@ def migrate(root, target, apply=False):
         if not apply:
             return result
         if target not in config["enabled_components"]:
-            prepare(root, target)
+            prepare(root, target, language)
         if not read_store(root, target):
-            write_empty_store(root, target, records)
+            write_empty_store(root, target, records, language=language)
         if digest(read_store(root, target)) != fingerprint or digest(read_store(root, source)) != fingerprint:
             raise ValueError("Verification failed or source changed; primary store not switched")
         if target not in config["enabled_components"]:
@@ -287,7 +294,8 @@ def enable(root, feature):
     return config
 
 
-def graph_query(root, entity):
+def graph_query(root, entity, language="en"):
+    resolution, text = messages(language)
     config = load_config(root)
     if "graph_traversal" not in config.get("enabled_features", []):
         raise ValueError("Enable graph_traversal before querying relationships")
@@ -295,13 +303,15 @@ def graph_query(root, entity):
     records = read_store(root, "graph")
     identities = graph_store.related(path_at(root, STORES["graph"]), entity)
     return {"store": "graph", "is_primary": config["primary_store"] == "graph", "entity": entity,
-            "relationship": "assertion about entity; not proof of a real-world relation",
+            "language": resolution, "relationship": text["relationship"],
             "evidence": [record for record in records if record["id"] in identities]}
 
 
 def main():
+    utf8_output()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", required=True, type=Path)
+    parser.add_argument("--lang", default="en", help="Message language tag (en/ko/ja/zh; other tags fall back to English)")
     commands = parser.add_subparsers(dest="command", required=True)
     init = commands.add_parser("init")
     selection = init.add_mutually_exclusive_group(required=True)
@@ -321,16 +331,17 @@ def main():
     move.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     try:
+        announce(args.lang)
         if args.command == "init":
-            result = initialize(args.root, args.mode, args.primary, args.stores, args.features)
+            result = initialize(args.root, args.mode, args.primary, args.stores, args.features, args.lang)
         elif args.command == "add":
-            result = add(args.root, args.component)
+            result = add(args.root, args.component, args.lang)
         elif args.command == "migrate":
-            result = migrate(args.root, args.to, args.apply)
+            result = migrate(args.root, args.to, args.apply, args.lang)
         elif args.command == "enable":
             result = enable(args.root, args.feature)
         elif args.command == "graph-query":
-            result = graph_query(args.root, args.entity)
+            result = graph_query(args.root, args.entity, args.lang)
         else:
             result = load_config(args.root)
         print(encoded(result), end="")

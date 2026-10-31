@@ -1,0 +1,160 @@
+[
+  {
+    "schema_version": "1.0",
+    "id": "OBS-DEMO-1",
+    "entity_ids": [
+      "MACHINE-DEMO"
+    ],
+    "statement": "The fictional sensor log records a stop at 09:00 and restart at 09:40.",
+    "information_type": "observation",
+    "verification_status": "verified",
+    "author_or_model": "synthetic-demo",
+    "created_at": "2026-01-10T12:30:00Z",
+    "version": "1",
+    "source_refs": [
+      {
+        "source_id": "L1-LOG-1",
+        "locator": "synthetic-sources.en.md#l1-log-1",
+        "source_version": "1",
+        "accessed_at": "2026-01-10T12:00:00Z",
+        "availability": "available"
+      }
+    ],
+    "semantic_context": {
+      "model_id": "L2-MODEL-1",
+      "model_version": "1",
+      "definition": "recorded_downtime_minutes is the difference between sensor records, not actual production loss."
+    },
+    "verification": {
+      "scope": "Existence of the log wording only; not sensor accuracy or actual production loss.",
+      "method": "Compared with the fictional original.",
+      "evidence_refs": [
+        "L1-LOG-1"
+      ]
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "id": "HYP-DEMO-1",
+    "entity_ids": [
+      "MACHINE-DEMO"
+    ],
+    "statement": "The fictional machine stop might have been caused by a cooling fault.",
+    "information_type": "hypothesis",
+    "verification_status": "unverified",
+    "author_or_model": "synthetic-demo",
+    "created_at": "2026-01-10T12:30:00Z",
+    "version": "1",
+    "source_refs": [
+      {
+        "source_id": "L1-WIKI-1",
+        "locator": "synthetic-sources.en.md#l1-wiki-1",
+        "source_version": "2",
+        "accessed_at": "2026-01-10T12:00:00Z",
+        "availability": "available"
+      }
+    ],
+    "semantic_context": null,
+    "verification": {
+      "scope": "Whether a cooling fault actually caused the stop.",
+      "method": "Unverified; the Wiki cites no original evidence.",
+      "evidence_refs": []
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "id": "ASSESSMENT-DEMO-1",
+    "entity_ids": [
+      "MACHINE-DEMO"
+    ],
+    "statement": "The fictional production team assessed high delivery risk against same-day shipment commitments.",
+    "information_type": "reviewed_assessment",
+    "verification_status": "in_review",
+    "author_or_model": "synthetic-production-team",
+    "created_at": "2026-01-10T12:30:00Z",
+    "version": "1",
+    "source_refs": [
+      {
+        "source_id": "ASSESSMENT-PRODUCTION-1",
+        "locator": "synthetic-sources.en.md#assessment-production-1",
+        "source_version": "1",
+        "accessed_at": "2026-01-10T12:00:00Z",
+        "availability": "available"
+      }
+    ],
+    "semantic_context": null,
+    "verification": {
+      "scope": "Validity of the delivery-risk assessment.",
+      "method": "Criteria were checked; comparison against actual delivery outcome is in progress.",
+      "evidence_refs": [
+        "ASSESSMENT-PRODUCTION-1"
+      ]
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "id": "DECISION-DEMO-1",
+    "entity_ids": [
+      "MACHINE-DEMO"
+    ],
+    "statement": "The fictional operating committee restart decision is currently effective.",
+    "information_type": "official_decision",
+    "verification_status": "disputed",
+    "author_or_model": "synthetic-demo",
+    "created_at": "2026-01-10T12:30:00Z",
+    "version": "1",
+    "source_refs": [
+      {
+        "source_id": "DECISION-1",
+        "locator": "synthetic-sources.en.md#decision-1",
+        "source_version": "1",
+        "accessed_at": "2026-01-10T12:00:00Z",
+        "availability": "available"
+      },
+      {
+        "source_id": "DECISION-2",
+        "locator": "synthetic-sources.en.md#decision-2",
+        "source_version": "2",
+        "accessed_at": "2026-01-10T12:00:00Z",
+        "availability": "available"
+      }
+    ],
+    "semantic_context": null,
+    "verification": {
+      "scope": "Current applicability of the decision, separate from its existence or machine safety.",
+      "method": "Adoption and suspension documents have unclear applicability; responsible-owner confirmation is needed.",
+      "evidence_refs": [
+        "DECISION-1",
+        "DECISION-2"
+      ]
+    }
+  },
+  {
+    "schema_version": "1.0",
+    "id": "EXECUTION-DEMO-1",
+    "entity_ids": [
+      "MACHINE-DEMO"
+    ],
+    "statement": "Fictional inspection-task request T-DEMO-1 timed out; actual task creation remains unknown.",
+    "information_type": "execution_result",
+    "verification_status": "unverified",
+    "author_or_model": "synthetic-demo",
+    "created_at": "2026-01-10T12:30:00Z",
+    "version": "1",
+    "source_refs": [
+      {
+        "source_id": "EXECUTION-1",
+        "locator": "synthetic-sources.en.md#execution-1",
+        "source_version": "1",
+        "accessed_at": "2026-01-10T12:00:00Z",
+        "availability": "available"
+      }
+    ],
+    "semantic_context": null,
+    "verification": {
+      "scope": "Whether the request actually created a task.",
+      "method": "Unverified; only a timeout log is available and state lookup is needed.",
+      "evidence_refs": []
+    }
+  }
+]

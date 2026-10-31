@@ -1,16 +1,18 @@
 # Repository instructions
 
-이 저장소는 공유 L1 원천 기록·L2 의미 모델과 독립적인 해석을 위한 공개 제안서와 Evidence-First 스킬을 배포한다. AI는 온톨로지의 필수 구성요소가 아닌 L3 외부 활용자다.
+[한국어](AGENTS.ko.md)
 
-- 근거를 다루는 분석·설계·코딩·검증 작업에서는 [Evidence-First](skills/evidence-first/SKILL.md)를 읽고 적용한다. 일반 대화나 단순 표현 수정에 무거운 검증 절차를 추가하지 않는다.
-- 공통 원천 기록과 정의를 권한 안에서 확인하고, 타인의 평가와 자신의 추론을 분리한다. 원본도 불완전하거나 잘못될 수 있다.
-- `information_type` 5종과 `verification_status` 4종은 독립 축이다. 공식 결정, 검증, 실행 권한을 서로 대신하지 않는다.
-- 초기 설정·구성 추가·이전에는 스킬의 [설정 및 전환 절차](skills/evidence-first/references/workspace-lifecycle.md)를 따른다. 저장 방식(없음·Wiki·관계형 DB·그래프 DB·조합)과 활용 기능(기본 조회·관계 탐색·RAG)은 별도 선택이다. 일반 요청에 초기 설정을 강제하지 않고, 병행 시 기준 저장소를 하나 지정한다. 이전은 원본 보존과 대조 후 전환하며 파생 색인은 새 기준에서 다시 만든다.
-- 실제 작업에서 환경 개선이 필요하면 [환경 개선 절차](skills/evidence-first/references/adaptive-environment.md)에 따라 먼저 근거 있는 제안을 만들고 현재 승인·사용자 정책 범위 안에서 실행·검증한다. 현 상태 유지도 대안이다. 효과가 없으면 확장을 멈추고, AI가 자율 허용 범위를 스스로 넓히지 않는다.
-- [효율 비교와 학습](skills/evidence-first/references/efficient-work.md)에 따라 품질·출처·권한을 유지하면서 단순한 방법을 찾는다. 반복 병목에는 작은 비교와 전체 부담 평가를 사용하고, 조건부 경험을 다음 작업에 활용한다. 단발성 작업에 벤치마크·새 구성·영구 기록을 강제하지 않는다.
-- 기존 `docs/`와 `prompts/` 문서를 보존한다. 원천 정정·L2 정의 변경·평가 공유·공식 결정·업무 실행은 별도 변경 경로로 취급한다.
-- 사용자가 이미 승인한 범위의 작업은 진행한다. 분석 허용을 쓰기 권한으로 확대하지 않으며, 권한·필수 승인이 부족한 실행만 보류한다.
-- 공개 자료와 명시적으로 표시한 가상 예제만 추가한다. 내부 문서, 개인정보, 인증정보, 사내 URL 및 민감한 메타데이터를 커밋하지 않는다. 이력 보존 원칙도 민감정보의 공개 보존을 허용하지 않는다.
-- 변경 후 `python -m unittest discover -s tests -v`와 `git diff --check`를 실행한다. 테스트 의존성·한계와 행동 평가 절차는 [테스트 안내](tests/README.md)에 있다.
+This public repository distributes shared L1 source-record/L2 semantic-model design guidance and the Evidence-First skill. AI is an external L3 consumer, not a required ontology component.
 
-이 파일과 스킬은 상위 지침·조직 정책·접근 통제를 대체하지 않는다.
+- Read [Evidence-First](skills/evidence-first/SKILL.md) for evidence-dependent analysis, design, coding, and verification. Keep simple edits proportionate.
+- Use accessible shared sources and definitions; separate others' assessments from your own inference. Originals can also be incomplete or wrong.
+- Keep the five information types and four verification statuses independent. Decisions, verification, and execution authority do not substitute for each other.
+- Follow [workspace lifecycle](skills/evidence-first/references/workspace-lifecycle.en.md) for setup, additions, and migration. Separate storage and features, select one primary, preserve originals, and rebuild derived indexes after a source switch.
+- Use [adaptation](skills/evidence-first/references/adaptive-environment.en.md) and [efficient work](skills/evidence-first/references/efficient-work.en.md) to propose and perform justified improvements within existing permission. Keeping the current method is valid. Stop unsuccessful expansion; never expand your own authority.
+- Preserve existing Korean docs and prompts. Source corrections, shared definition changes, independent assessments, formal decisions, and actions follow distinct paths.
+- Continue work already authorized by the user. Do not turn read/analysis permission into write permission or repeatedly request existing approval.
+- Publish only public material or clearly synthetic examples. Exclude private documents, personal data, credentials, internal URLs, and sensitive metadata. Retention rules never require public retention of secrets.
+- Use the user's requested language. Maintain one standard skill identity, English SKILL.md and Korean SKILL.ko.md; keep language variants semantically aligned and IDs/enum values stable. Add catalogs with the documented fallback instead of duplicating executable logic.
+- Run `python -m unittest discover -s tests -v` and `git diff --check`. Read [test guidance](tests/README.en.md) for scope and limitations.
+
+These instructions and the skill do not replace higher-priority instructions or real access controls.

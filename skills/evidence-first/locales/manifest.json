@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "default": "en",
+  "locales": {
+    "en": {"name": "English", "documentation": "core-guides"},
+    "ko": {"name": "한국어", "documentation": "core-guides"},
+    "ja": {"name": "日本語", "documentation": "quickstart"},
+    "zh": {"name": "中文（简体）", "documentation": "quickstart"}
+  }
+}

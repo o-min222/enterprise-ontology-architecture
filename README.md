@@ -1,5 +1,7 @@
 # 기업 온톨로지의 신뢰성과 활용성을 높이기 위한 설계 원칙
 
+한국어 · [English](README.en.md) · [日本語](README.ja.md) · [中文](README.zh.md)
+
 기업의 원천 기록(L1)과 공통 의미 모델(L2)을 공유 자산으로 관리하고, 개인·부서·AI의 해석을 독립적으로 보존하는 아키텍처 및 데이터 거버넌스 제언입니다.
 
 ## 핵심 원칙
@@ -19,7 +21,7 @@
 
 공유 L1·L2 활용, 해석 독립, 비례적 검증, 출처 추적에 **실행 권한 분리**를 더한 재사용 가능한 행동 지침입니다. AI는 온톨로지의 외부 활용자이며, 스킬은 실제 접근 통제나 승인 시스템을 대체하지 않습니다.
 
-- [스킬 본문](skills/evidence-first/SKILL.md): 표준 `SKILL.md`, 도구에 종속되지 않는 공통 규칙.
+- [한국어 스킬 본문](skills/evidence-first/SKILL.ko.md) · [표준 진입점](skills/evidence-first/SKILL.md): 같은 스킬의 공통 규칙.
 - [설치 및 연동](docs/evidence-first-installation.md): Codex·Claude Code 설치, AGENTS.md·CLAUDE.md 연결, 버전 고정과 업데이트.
 - [가상 예제](skills/evidence-first/examples/README.md): 원천 충돌·독립 평가·실행 결과 및 선택적 JSON 기록.
 - [검증과 테스트 시나리오](tests/README.md): 구조·출처 연결·5×4 독립 조합 검사와 행동 평가.
@@ -43,3 +45,9 @@
 [환경 개선 절차](skills/evidence-first/references/adaptive-environment.md)는 기본적으로 현재 요청의 권한을 따르는 `task_scoped`로 동작합니다. 필요하면 프로젝트별로 제안만 하는 `propose_only` 또는 소유자가 지정한 로컬 변경을 자율 적용하는 `scoped_auto`를 기록할 수 있습니다. 정책은 AI가 읽는 지침이며 CLI·OS·서버의 권한 통제를 대신하지 않습니다.
 
 [효율 비교와 학습](skills/evidence-first/references/efficient-work.md)은 현재 방법과 유망한 대안을 작은 범위에서 비교하고, 정확성·출처·권한을 유지하면서 시간·재작업·설정/유지 부담을 줄이는 방법을 찾게 합니다. 단발성 작업은 간단히 마치고, 재사용할 가치가 있는 관측 결과만 조건부 로컬 경험으로 남깁니다. 같은 조건에서는 경험을 활용하고 조건이 달라지면 재검토하며, 구성 확장 자체를 성과로 삼지 않습니다.
+
+### 다국어 지원
+
+AI는 사용자가 요청한 언어로 답하며, 영어 지침을 읽더라도 영어 답변을 강제하지 않습니다. 한국어·영어 핵심 문서와 일본어·중국어 빠른 시작을 제공하고, 생성 Wiki의 안내·RAG 생성 규칙은 `en`·`ko`·`ja`·`zh` 메시지 카탈로그를 사용합니다. 그 밖의 언어 태그는 도구 메시지를 영어로 대체한 사실을 표시하고 AI가 요청 언어로 설명할 수 있습니다. CLI 옵션·JSON 키·기술 오류는 영어를 유지합니다.
+
+`--lang ko`처럼 명령 앞에 언어를 지정합니다. 원문·ID·분류·권한은 바꾸지 않습니다. 서로 다른 언어로 검색할 때는 원래 질문을 보존하고 `--search-query`에 원천 언어 검색어를 따로 전달할 수 있습니다. 새 CJK 토큰화용 색인 형식으로 이전 색인은 재생성이 필요하며, 출력 언어 변경만으로 현재 색인을 다시 만들지는 않습니다. [지원 범위·번역·검색 규칙](skills/evidence-first/references/languages.md).

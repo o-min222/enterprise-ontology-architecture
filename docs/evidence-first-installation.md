@@ -1,3 +1,5 @@
+> 플러그인 전체 설치·초기 설정·업데이트·삭제는 [플러그인 안내](plugin-guide.ko.md)를 먼저 보세요. 아래는 단독 핵심 스킬 및 프로젝트 지침 연동 방법입니다.
+
 # Evidence-First 설치 및 연동
 
 [English](evidence-first-installation.en.md) · [다국어 지원](../skills/evidence-first/references/languages.md)

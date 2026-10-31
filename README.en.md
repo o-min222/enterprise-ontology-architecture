@@ -1,4 +1,49 @@
-# Evidence-First enterprise ontology architecture
+# Evidence-First
+
+![Evidence-First — sources, meaning, independent reasoning](assets/banner.svg)
+
+[한국어](README.md) · English · [日本語](README.ja.md) · [中文](README.zh.md)
+
+**Check evidence, separate interpretation, and act within authority.**
+Start with behavioral guidance. Add a Wiki, SQLite, graph DB, or RAG when useful.
+
+`0.1.0 preview` · local helpers · multilingual · not listed in official directories
+
+### Quick install
+
+Codex CLI:
+
+```sh
+codex plugin marketplace add o-min222/enterprise-ontology-architecture
+codex plugin add evidence-first@evidence-first-plugins
+```
+
+Inside Claude Code:
+
+```text
+/plugin marketplace add o-min222/enterprise-ontology-architecture
+/plugin install evidence-first@evidence-first-plugins
+```
+
+Start a new conversation: “Set up Evidence-First for this project. Use English and start with behavior only.” Invoke `$evidence-first-setup` in Codex or `/evidence-first:evidence-first-setup` in Claude Code. Ordinary tasks can use the core without setup.
+
+Other skill hosts can use the complete `skills/evidence-first` folder. See the [plugin guide](docs/plugin-guide.md) for activation, project instructions, updates, removal, and compatibility limits. Installation does not automatically copy AGENTS.md or CLAUDE.md into target projects.
+
+| Need | Included |
+| --- | --- |
+| Evidence-led analysis and coding | Core guidance, independent 5×4 classification, proportionate verification |
+| Durable project knowledge | Optional Wiki, SQLite, real local RDF graph DB |
+| Cited retrieval | Local BM25 context; the calling AI generates the answer |
+| Better working methods | Observed friction, concrete proposal, authorized execution, outcome review |
+| Language choice | English/Korean full guides; Japanese/Chinese quickstarts/catalogs; other-language answers with explicit catalog fallback |
+
+[Examples](skills/evidence-first/examples/README.en.md) · [Installation](docs/evidence-first-installation.en.md) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Support/license status](SUPPORT.md) · [Privacy](PRIVACY.md) · [Security](SECURITY.md)
+
+No reuse license has been declared. Plugin instructions do not expand the AI host's actual permissions.
+
+---
+
+## Enterprise ontology architecture background
 
 [한국어](README.md) · English · [日本語](README.ja.md) · [中文](README.zh.md)
 

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Set up Evidence-First"
+  short_description: "Choose language, storage, and optional retrieval"
+  brand_color: "#147D73"
+  default_prompt: "Use $evidence-first-setup to configure this project with the simplest useful Evidence-First workflow."

@@ -1,4 +1,49 @@
-# 기업 온톨로지의 신뢰성과 활용성을 높이기 위한 설계 원칙
+# Evidence-First
+
+![Evidence-First — 출처, 의미, 독립적 해석](assets/banner.svg)
+
+한국어 · [English](README.en.md) · [日本語](README.ja.md) · [中文](README.zh.md)
+
+**근거를 확인하고, 해석을 구분하고, 권한 안에서 실행하는 AI 작업 방식.**
+행동 지침만으로 시작하고, 필요할 때 Wiki·SQLite·그래프 DB·RAG를 추가하세요.
+
+`0.1.0 preview` · 로컬 도우미 · 다국어 · 공식 디렉터리 미등록
+
+### 빠른 설치
+
+Codex CLI:
+
+```sh
+codex plugin marketplace add o-min222/enterprise-ontology-architecture
+codex plugin add evidence-first@evidence-first-plugins
+```
+
+Claude Code 대화창:
+
+```text
+/plugin marketplace add o-min222/enterprise-ontology-architecture
+/plugin install evidence-first@evidence-first-plugins
+```
+
+설치 후 새 대화에서 “Evidence-First를 설정해줘. 한국어로 설명하고 행동 지침만으로 시작해줘.”라고 요청하세요. Codex는 `$evidence-first-setup`, Claude Code는 `/evidence-first:evidence-first-setup`으로 직접 호출할 수 있습니다. 일반 작업은 설정 없이 핵심 스킬로 바로 시작할 수 있습니다.
+
+그 밖의 AI는 `skills/evidence-first` 폴더 전체를 사용하세요. 자동 호출·프로젝트 지침 연결·업데이트·삭제는 [플러그인 안내](docs/plugin-guide.ko.md)에 설명했습니다. 플러그인 설치가 AGENTS.md나 CLAUDE.md를 대상 프로젝트에 자동 배포하지는 않습니다.
+
+| 필요 | 제공 기능 |
+| --- | --- |
+| 분석·코딩 시 근거와 추론 구분 | 핵심 행동 지침, 5×4 독립 분류, 비례적 검증 |
+| 프로젝트 지식 축적 | 선택적 Wiki·SQLite·실제 로컬 RDF DB |
+| 출처를 붙인 검색 | 로컬 BM25 검색, AI가 답변 생성 |
+| 환경 개선 | 실제 문제에 따른 제안·허용 범위 내 실행·결과 확인 |
+| 언어 선택 | 영·한 상세 지침, 일·중 빠른 시작/메시지, 다른 언어 응답과 명시적 대체 |
+
+[사용 예제](skills/evidence-first/examples/README.md) · [설치 상세](docs/evidence-first-installation.md) · [변경 이력](CHANGELOG.md) · [기여](CONTRIBUTING.md) · [지원/라이선스 상태](SUPPORT.md) · [개인정보](PRIVACY.md) · [보안](SECURITY.md)
+
+공개 저장소이지만 재사용 라이선스는 아직 선언되지 않았습니다. 플러그인은 AI 호스트의 실제 접근 권한을 확대하지 않습니다.
+
+---
+
+## 기업 온톨로지의 신뢰성과 활용성을 높이기 위한 설계 원칙
 
 한국어 · [English](README.en.md) · [日本語](README.ja.md) · [中文](README.zh.md)
 

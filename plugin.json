@@ -1,0 +1,29 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "evidence-first",
+  "version": "0.1.0",
+  "description": "Evidence-led AI workflows with optional Wiki, relational/graph storage, grounded retrieval, and multilingual guidance.",
+  "author": {"name": "o-min222", "url": "https://github.com/o-min222"},
+  "homepage": "https://github.com/o-min222/enterprise-ontology-architecture",
+  "repository": "https://github.com/o-min222/enterprise-ontology-architecture",
+  "keywords": ["evidence", "ontology", "provenance", "wiki", "rag", "multilingual"],
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/evidence-first-setup/SKILL.md",
+      "interface": {
+        "displayName": "Evidence-First",
+        "shortDescription": "Evidence-led AI workflows",
+        "longDescription": "Keep sources, shared definitions, independent interpretation, verification, and execution authority distinct. Start with behavior alone; add local knowledge tools when useful.",
+        "developerName": "o-min222",
+        "category": "Productivity",
+        "capabilities": ["Read", "Write"],
+        "websiteURL": "https://github.com/o-min222/enterprise-ontology-architecture",
+        "privacyPolicyURL": "https://github.com/o-min222/enterprise-ontology-architecture/blob/main/PRIVACY.md",
+        "defaultPrompt": ["Use Evidence-First to assess these sources and separate evidence from interpretation.", "Set up Evidence-First for this project in my preferred language."],
+        "brandColor": "#147D73",
+        "composerIcon": "./skills/evidence-first/assets/icon.png",
+        "logo": "./skills/evidence-first/assets/icon.png"
+      }
+    }
+  }
+}

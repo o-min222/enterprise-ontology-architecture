@@ -1,3 +1,5 @@
+> プラグイン版 0.1.0 preview: [インストール・更新 (English)](docs/plugin-guide.md) · [한국어 안내](docs/plugin-guide.ko.md)。公式ディレクトリには未掲載です。
+
 # Evidence-First：日本語クイックスタート
 
 [한국어](README.md) · [English](README.en.md) · 日本語 · [中文](README.zh.md)

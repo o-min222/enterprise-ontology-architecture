@@ -1,0 +1,6 @@
+{
+  "name": "evidence-first-plugins",
+  "description": "Evidence-First workflows, guided setup, and optional local knowledge tools.",
+  "owner": {"name": "o-min222"},
+  "plugins": [{"name": "evidence-first", "source": "./", "description": "Evidence-led AI workflows and optional local knowledge tools."}]
+}

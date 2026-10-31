@@ -35,3 +35,10 @@ git diff --check
 이번 구현에서 실제 실행한 검사와 미검증 범위는 [검증 기록](validation-report.md)에 정리했다.
 
 기존 문서 보존 확인은 변경 전 커밋과 비교한다. 예를 들어 `git diff <기준-커밋> -- docs/ prompts/`에서 기존 파일 변경을 확인하고, 의도한 새 설치 안내 외의 수정이 없는지 검토한다.
+# 플러그인 배포 검사 추가
+
+배포 검사 8개를 더해 전체 자동 검사는 55개입니다. 실제 임시 Git 인덱스와 ZIP을 사용해 두 호스트의 정보·버전·경로, 복사한 두 스킬의 구성, 배포 결과의 재현성과 파일 해시, 미등록 데이터 제외, 실행 데이터 경로·미등록 수정·원천 덮어쓰기·심볼릭 링크 거부를 확인합니다.
+
+Claude가 있다면 `claude plugin validate .claude-plugin/plugin.json` 및 `claude plugin validate .claude-plugin/marketplace.json --strict`를 실행하세요. 보존된 루트 CLAUDE.md는 플러그인 문맥으로 자동 적용되지 않는다는 예상 주의가 나옵니다. 실제 플러그인 지침은 스킬에서 로드됩니다. `claude --plugin-dir . plugin details evidence-first`로 모델 호출이나 전역 설치 없이 로컬 스킬 탐색을 확인할 수 있습니다. 공통 매니페스트는 선언한 Agent Plugins 스키마로 검사할 수 있습니다.
+
+파일을 검토·스테이징한 뒤 `python scripts/package_plugin.py`로 배포 ZIP을 만드세요. CI는 Linux Python 3.10/3.14와 Windows Python 3.14에서 검사·패키징하도록 구성되어 있으며 실제 원격 실행 결과는 별도로 확인해야 합니다. 설치·자동 검사·공식 등록·재사용 라이선스·AI 행동 보장은 서로 다릅니다.

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Evidence-First"
+  short_description: "Evidence-led reasoning and optional knowledge tools"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.svg"
+  brand_color: "#147D73"
+  default_prompt: "Use $evidence-first to assess these sources, preserve provenance, and distinguish interpretation from evidence."

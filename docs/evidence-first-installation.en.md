@@ -1,3 +1,5 @@
+> For the complete plugin, onboarding, updates, and removal, start with the [plugin guide](plugin-guide.md). The instructions below also cover standalone core installation and project instruction integration.
+
 # Install and connect Evidence-First
 
 [한국어](evidence-first-installation.md) · [Language support](../skills/evidence-first/references/languages.md)

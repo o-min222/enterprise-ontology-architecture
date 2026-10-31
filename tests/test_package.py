@@ -60,7 +60,7 @@ class PackageTests(unittest.TestCase):
                         self.assertTrue(target.is_file())
 
     def test_repository_links_and_claude_import(self):
-        for path in [*ROOT.glob("README*.md"), *ROOT.glob("AGENTS*.md"), *ROOT.glob("CLAUDE*.md"), *(ROOT / "docs").glob("*.md"), *(ROOT / "prompts").glob("*.md"), *(ROOT / "tests").glob("*.md")]:
+        for path in [*ROOT.glob("*.md"), *(ROOT / "docs").glob("*.md"), *(ROOT / "prompts").glob("*.md"), *(ROOT / "tests").glob("*.md")]:
             for target in local_links(path):
                 self.assertTrue(target.is_file(), f"Broken local link in {path}: {target}")
         imports = re.findall(r"^@([^\s]+)$", (ROOT / "CLAUDE.md").read_text(encoding="utf-8"), re.M)

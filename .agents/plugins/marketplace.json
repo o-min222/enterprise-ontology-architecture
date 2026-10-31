@@ -1,0 +1,10 @@
+{
+  "name": "evidence-first-plugins",
+  "interface": {"displayName": "Evidence-First Plugins"},
+  "plugins": [{
+    "name": "evidence-first",
+    "source": {"source": "local", "path": "./"},
+    "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+    "category": "Productivity"
+  }]
+}
